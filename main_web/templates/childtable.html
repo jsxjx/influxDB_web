@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+{% block maincontents %}
+<div class="content-section">
+    <div class="container">
+        <h2>请选择参数模版：</h2>
+        <form action="/ajax_some_para/"  role="form">
+            <div class=“form-group”>
+                <div class="form-inline">
+                    <label>模版选择</label><br>
+                    <select name="configuration" id="id_conf" class="form-control">
+                        {% for option_dict in stencil_option %}
+                            <option value= {{ option_dict.index}}>{{ option_dict.NAME }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="查询" id="set" class="btn btn-default" />
+        </form>
+        
+        <table id="table" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true">
+        </table>
+        <div id="main1" style="height:0px"></div>
+        <div id="main2" style="height:0px"></div>
+        <div id="main3" style="height:0px"></div>
+    </div>
+    <!-- /container -->
+</div>
+<!--/.content-section -->
+<script src="/static/echarts_3.0.2/echarts.min.js"></script>
+<script>
+var list_flight_id = {{ json_list | safe}};
+var flight_id = list_flight_id[0];
+var $table = $('#table');
+var empty_json = {};
+
+$(function() {
+
+    columns_set = [
+            {
+                title: 'index',
+                field: 'index',
+                align: 'center',
+                valign: 'middle',
+                sortable: true
+            },
+            {
+                title: 'value',
+                field: 'value',
+                align: 'center',
+                valign: 'middle',
+                sortable: true
+            }
+        ]
+    $table.bootstrapTable({
+                data: empty_json,
+                columns: columns_set,
+                search: true
+            });
+
+});
+
+
+$(document).ready(function(){
+      $("#set").click(function(){
+        var column_index = $("#id_colunm_index").val();
+        var value_conf = document.querySelector('#id_conf').value
+        if (column_index==''){
+            alert("信息不完整，请输入所有信息");
+            return false;
+        }
+
+
+
+        $.ajax({
+            type:"GET",
+            data: {
+                value_conf:value_conf, 
+                flight_id:flight_id,
+            },
+            url: "{% url 'ajax_some_para' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
+            cache: false,
+            dataType: "json",
+            beforeSend: function () {
+                $table.bootstrapTable('showLoading');
+                $table.bootstrapTable('load', empty_json);
+            },
+            success: function(get_result, statues, xml){
+                $table.bootstrapTable('hideLoading');
+                var result = get_result[0];
+                para_name_list = result[0];                
+                para_unit_dic = result[result.length - 1]                
+                $table.bootstrapTable('destroy');
+                
+                var columns_set_one = {};
+                var columns_set_array = [];
+                //将index放在首列
+                columns_set_one={
+                        title: 'index',
+                        field: 'index',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true
+                    }
+                columns_set_array.push(columns_set_one);
+                //将GMT_TIME放入第二列
+                columns_set_two = {
+                    title: '$GMT TIME',
+                    field: '$GMT TIME',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true
+                }
+                columns_set_array.push(columns_set_two);
+                for(var item in para_name_list){
+                    if(item != 'index' && item != '$GMT TIME'){
+                        columns_set_one={
+                            title: item,
+                            field: item,
+                            align: 'center',
+                            valign: 'middle',
+                            sortable: true
+                        }
+                        columns_set_array.push(columns_set_one);
+                    }
+                }
+                
+                //生成表头第二列的单位
+                var columns_set_units_one = {};
+                var columns_set_units_array = [];
+                //将index放在首列
+                columns_set_units_one={
+                        field: 'index',
+                        title: 'UNITS',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true
+                    }
+                columns_set_units_array.push(columns_set_units_one);
+                //将GMT_TIME放入第二列
+                columns_set_units_two = {
+                    field: '$GMT TIME',
+                    title: 'HH:MM:SS',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true
+                }
+                columns_set_units_array.push(columns_set_units_two);
+                for(var item in para_unit_dic){
+                    if(item != 'index' && item != '$GMT TIME'){
+                        columns_set_units_one={
+                            field: item,
+                            title: para_unit_dic[item],
+                            align: 'center',
+                            valign: 'middle',
+                            sortable: true
+                        }
+                        columns_set_units_array.push(columns_set_units_one);
+                    }
+                }
+                
+                var columns_set_merge = new Array();
+                columns_set_merge = [columns_set_array, columns_set_units_array];
+                //shift() 方法用于把数组的第一个元素从其中删除，并返回第一个元素的值。pop()删除最后一个元素。
+                result.shift();
+                result.pop();
+                $table.bootstrapTable({
+                    data: result,
+                    columns: columns_set_merge,
+                    search: true
+                });
+                
+
+
+                //对echarts进行设置
+                               
+                //固定部分，时间的配置，还有母板的基础设置
+                var data_para_time = new Array();
+                var post_data = result;
+                for(var i=0;i<post_data.length;i++){
+                    data_para_time.push(post_data[i]["$GMT TIME"]);            
+                }
+                var axisDATA = data_para_time;
+                var option_base = new Object();
+                option_base =
+                {
+                    animation:false,
+                    tooltip: {
+                        trigger: 'axis',
+                        show: true,
+                    },                   
+                    dataZoom:{
+                        type: 'slider',
+                        realtime:false,
+                        show:true,
+                        orient:'horizontal',
+                        start: 0,
+                        end: 100
+                    },
+                    xAxis : {
+                        type : 'category',
+                        data : axisDATA,
+                        name : "HH:MM:SS"
+                    },
+                    yAxis : {
+                            type : 'value'
+
+                    },
+                    legend: {
+                            data:[]
+                    },
+                    series : []  
+                };
+
+                //动态部分，对每张图表的配置
+                var echarts_config_option = get_result[1];
+                var echart_id_array = new Array();
+                echart_id_array = ['main1', 'main2', 'main3']
+                var myechart_array = new Array();
+                var option_importation = new Array();
+                //获取包含逻辑值参数表名的列表
+                var list_index_of_echarts_logic = get_result[2];
+                for (var ec_count = 0; ec_count<echarts_config_option.length;ec_count++)
+                {
+                    var echarts_element = document.getElementById(echart_id_array[ec_count]);
+                    option_importation[ec_count] = clone(option_base);
+                    //判断是否属于逻辑值的参数列表
+                    var jude_number = list_index_of_echarts_logic.indexOf(ec_count)
+                    if (jude_number == -1)
+                    {
+                        make_chart_option(echarts_config_option[ec_count], post_data, option_importation[ec_count]);
+                    }
+                    else
+                    {
+                        make_logic_chart_option(echarts_config_option[ec_count], post_data, option_importation[ec_count]);
+                    }
+                    
+
+                    //对三个表的高度和区间控件设置
+                    if (ec_count==0)
+                    {
+                        option_importation[ec_count]["dataZoom"]["show"] = true;
+                        echarts_element.style.height = 300 + 'px';
+                    }
+                    else
+                    {
+                        option_importation[ec_count]["dataZoom"]["show"] = true;
+                        echarts_element.style.height = 225 + 'px';
+                    }
+                    
+                    //加载实例
+                    myechart_array[ec_count] = echarts.init(echarts_element);
+                    myechart_array[ec_count].setOption(option_importation[ec_count]);
+                    myechart_array[ec_count].group = 'group1';//设置实例的 group id
+                }
+                echarts.connect('group1');//多个图表实例实现联动
+            },
+            error: function(){
+                alert("查询失败");
+            }
+        });
+        return false;
+    });
+});
+
+
+function make_chart_option(list_config, post_data, option)
+{
+    //构造option.series
+    
+    for(var series_name in list_config){
+        var option_series_data = new Array()
+        for(var i=0;i<post_data.length;i++){
+            option_series_data.push(post_data[i][series_name]);
+        }
+        var option_series_config = {};
+        option_series_config = {
+            "name": series_name,
+            "type": list_config[series_name],
+            "data": option_series_data,
+            "large": true,
+        }
+        option["series"].push(option_series_config);
+        option["legend"]["data"].push(series_name);
+    }
+}
+
+function make_logic_chart_option(list_config, post_data, option)
+{
+    option["yAxis"]["type"] = "category";
+
+    //构造[yAxis][data]
+    var hash = {};
+    var list_yaxis_legend = new Array();
+    for(var series_name in list_config){
+        var option_series_data = new Array();
+        for(var i=0;i<post_data.length;i++){
+            option_series_data.push(post_data[i][series_name]);
+        }
+        for (var i=0; i<option_series_data.length;i++){
+            var elem = option_series_data[i];
+            if(!hash[elem])
+            {
+                hash[elem] = (Object.keys(hash)).length + 1;
+                list_yaxis_legend.push(elem);
+            }
+        }
+    }
+    console.log(hash);
+    option["yAxis"]["data"] = list_yaxis_legend;
+    console.log(list_yaxis_legend);
+    //对data改造成符合y轴目录
+    for(var series_name in list_config)
+    {
+        var option_series_data = new Array();
+        for(var i=0;i<post_data.length;i++){
+            var para_value = post_data[i][series_name];
+            option_series_data.push([i, hash[para_value] - 1]);
+        }
+        var option_series_config = {};
+        option_series_config = {
+            "name": series_name,
+            "type": list_config[series_name],
+            "data": option_series_data,
+            "large": true,
+        }
+        option["series"].push(option_series_config);
+        option["legend"]["data"].push(series_name);
+    }
+
+
+    option["tooltip"]["formatter"] = '{b}'
+
+}
+
+function clone(obj)
+{
+    var o,i,j,k;
+    if(typeof(obj)!="object" || obj===null)return obj;
+    if(obj instanceof(Array))
+    {
+        o=[];
+        i=0;j=obj.length;
+        for(;i<j;i++)
+        {
+            if(typeof(obj[i])=="object" && obj[i]!=null)
+            {
+                o[i]=arguments.callee(obj[i]);
+            }
+            else
+            {
+                o[i]=obj[i];
+            }
+        }
+    }
+    else
+    {
+        o={};
+        for(i in obj)
+        {
+            if(typeof(obj[i])=="object" && obj[i]!=null)
+            {
+                o[i]=arguments.callee(obj[i]);
+            }
+            else
+            {
+                o[i]=obj[i];
+            }
+        }
+    }
+ 
+    return o;
+}
+
+
+</script>
+
+{% endblock %}
