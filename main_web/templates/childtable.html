@@ -9,7 +9,7 @@
                     <label>模版选择</label><br>
                     <select name="configuration" id="id_conf" class="form-control">
                         {% for option_dict in stencil_option %}
-                            <option value= {{ option_dict.NAME}}>{{ option_dict.NAME }}</option>
+                            <option value= "{{ option_dict.NAME}}">{{ option_dict.NAME }}</option>
                         {% endfor %}
                     </select>
                 </div>
