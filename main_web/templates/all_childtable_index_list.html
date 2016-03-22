@@ -15,49 +15,48 @@
 
 
 var $table = $('#table');
-var table_list_json = {{ result_json | safe}}
+var index_list_json = {{ result_json | safe}}
+var result_list_json = [];
+var columns_set = [];
 $(function() {
+    for(var key in index_list_json)
+    {
+        result_list_json.push(index_list_json[key]);
+    }
 
-    columns_set = [
+    for(var key in index_list_json)
+    {
+        for(var item in index_list_json[key])
+        {
+            var single_set = 
             {
-                title: 'index',
-                field: 'index',
+                title: '',
+                field: '',
                 align: 'center',
                 valign: 'middle',
                 sortable: true
-            },
+            };
+            if(item!="AC_sector")
             {
-                title: 'AI_number',
-                field: 'Aircraft_Identification',
-                align: 'center',
-                valign: 'middle',
-                sortable: true
-            },
-            {
-                title: 'updata_Date',
-                field: 'updata_Date',
-                align: 'center',
-                valign: 'middle',
-                sortable: true
-            },
-            {
-                title: 'updata_Time',
-                field: 'updata_Time',
-                align: 'center',
-                valign: 'middle',
-                sortable: true
-            },
+                single_set["title"] = item;
+                single_set["field"] = item;
+                columns_set.push(single_set);
+            }
+        }
+        break;
+    }
+    columns_set.push(
             {
                 title: '进入链接',
-                field: 'index',
+                field: 'AC_sector',
                 align: 'center',
                 valign: 'middle',
                 sortable: true,
                 formatter: flightFormatter
-            }
-        ]
+            });
+        
     $table.bootstrapTable({
-                data: table_list_json,
+                data: result_list_json,
                 columns: columns_set,
                 search: true
             });

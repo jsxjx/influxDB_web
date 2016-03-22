@@ -28,8 +28,7 @@
 <!--/.content-section -->
 <script src="/static/echarts_3.0.2/echarts.min.js"></script>
 <script>
-var list_flight_id = {{ json_list | safe}};
-var flight_id = list_flight_id[0];
+
 var $table = $('#table');
 var empty_json = {};
 
@@ -75,7 +74,7 @@ $(document).ready(function(){
             type:"GET",
             data: {
                 value_conf:value_conf, 
-                flight_id:flight_id,
+                flight_id:"{{ sector_id }}",
             },
             url: "{% url 'ajax_some_para' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
             cache: false,

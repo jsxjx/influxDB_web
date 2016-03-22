@@ -5,28 +5,18 @@ from hbase_function import HBASE_interface
 from hbase_function import LIST_to_STR
 from aircraft_config import AC_WQAR_CONFIG
 from hbase_function import Echarts_option
+from influxdb_function import influxDB_interface
 import json
 
 def all_childtable_index_list(request):
-    hbase_interface = HBASE_interface()
-    tablename = "tablename_index"
-    cf_set = ['c1:Aircraft_Identification',
-              'c1:updata_Date',
-              'c1:updata_Time']
-    result_scan_dict = hbase_interface.query_table(tablename,cf_set)
-    result_list = []
-    for key, value in result_scan_dict.items():
-        single = {'index' : key,
-                  'Aircraft_Identification' : value['c1:Aircraft_Identification'],
-                  'updata_Date':value['c1:updata_Date'],
-                  'updata_Time':value['c1:updata_Time'],}
-        result_list.append(single)
-    result_json = json.dumps(result_list)
+    infdb_if = influxDB_interface()
+    sector_index = infdb_if.inf_query("DB_sector_index", "*", "index")
+    df = sector_index['index']
+    result_json = df.to_json(orient="index")
     return render(request, 'all_childtable_index_list.html',{'result_json': result_json})
 
-def childtable(request, flight_id):
-    list = [flight_id]
-    json_list = json.dumps(list)
+def childtable(request, sector_id):
+
 
     hbase_interface = HBASE_interface()
     table_name = "stencil_config"
@@ -41,7 +31,7 @@ def childtable(request, flight_id):
                   }
         result_list.append(single)
 
-    return render(request, 'childtable.html', {'json_list': json_list,
+    return render(request, 'childtable.html', {'sector_id': sector_id,
                                                'stencil_option': result_list})
 
 def ajax_some_para(request):
@@ -50,6 +40,7 @@ def ajax_some_para(request):
     post_index = request.GET.get('value_conf', None)
     print post_index
     post_flight_id = request.GET.get('flight_id', None)
+    print post_flight_id
     aircraft_id = post_flight_id[0:6]
     # 读取模版表的存储详情
     table_stencil_name = "stencil_config"
