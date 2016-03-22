@@ -91,7 +91,7 @@
 </div>
 
 <script>
-var stencil_index_number = {{ stencil_index_number }}
+var stencil_NAME = "{{ stencil_NAME }}"
 $(document).ready(function(){
     $("#set_512").click(function(){
         
@@ -99,7 +99,7 @@ $(document).ready(function(){
         post_string_512 = option_to_str("from_echarts_512")
         $.ajax({
             type:"GET",
-            data: {stencil_index_number:stencil_index_number,
+            data: {stencil_NAME:stencil_NAME,
                 post_string_256:post_string_256,
                 post_string_512:post_string_512,},
             url: "{% url 'stencil_echarts' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
@@ -126,31 +126,31 @@ $(function() {
     columns_set = [
             {
                 title: 'name',
-                field: 'c1:NAME',
+                field: 'NAME',
                 align: 'center',
                 valign: 'middle'                
             },
             {
                 title: 'ATA',
-                field: 'c1:ATA',
+                field: 'ATA',
                 align: 'center',
                 valign: 'middle'
             },
             {
                 title: 'creator',
-                field: 'c1:creator',
+                field: 'CREATOR',
                 align: 'center',
                 valign: 'middle'
             },
             {
                 title: '737-3C 参数列表',
-                field: 'c1:WQAR256_IDC',
+                field: 'WQAR_737_3C',
                 align: 'center',
                 valign: 'middle'
             },
             {
                 title: '737-7 参数列表',
-                field: 'c1:WQAR512_IDC',
+                field: 'WQAR_737_7',
                 align: 'center',
                 valign: 'middle'
             }

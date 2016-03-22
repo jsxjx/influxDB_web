@@ -35,18 +35,11 @@ class influxDB_interface():
 
     def list_query(self, dbname, list, mes, AC_sector):
         index_str = add_sign('index') + ","
+        GMT_str = add_sign('$GMT TIME') + ","
         value_str = reduce(merge_str, map(add_sign, list))
         mes_str = add_sign(mes)
         where_str = " WHERE \"AC_sector\" =" + add_single_quotes(AC_sector)
-        print value_str
-        sql_str = "SELECT " + index_str + value_str + " FROM " + mes_str + where_str
-        print sql_str
+        sql_str = "SELECT " + index_str + GMT_str + value_str + " FROM " + mes_str + where_str
         result = self.DFclient(dbname).query(sql_str)
         result = result[mes]
         return result
-
-query_result = influxDB_interface().list_query("CKG_QAR",["623:STBY HYD OIL PRESSURE","463:GUIDANCE CUE X POSITION"],'737_7', 'B-1527_20150901023317')
-query_result.index = range(1,(len(query_result.index)+1),1)
-new_df = query_result.fillna('-')
-result_json = new_df.to_dict(orient="records")
-print result_json

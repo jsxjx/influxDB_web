@@ -13,21 +13,4 @@ def home(request):
 
 def storing_data(request):
 
-    print u"%s 开始HBASE译码" % time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-    allstarttime = datetime.datetime.now()
-    decode_list = MERGE_DECODE_LIST()
-
-    computer_name = socket.getfqdn(socket.gethostname())
-    if computer_name == "wxjd-61222177.cq.airchina.com.cn":
-        #单位电脑路径
-        dir_path = r'G:\QAR_DATA\append_upload'
-    else:
-        #服务器电脑路径
-        dir_path = '/opt/QAR_DATA/hbase_append_upload'
-    decode_list.all_decode_list(dir_path, save_decode_list_to_hbase)
-    #decode_list.all_decode_list(dir_path, decode_list.save_to_csv)
-
-    allendtime = datetime.datetime.now()
-    print u"%s 结束HBASE译码" % time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-    print u"总耗时 %s s" %((allendtime - allstarttime).seconds)
     return HttpResponse("已完成数据存入")
