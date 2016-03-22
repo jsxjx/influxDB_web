@@ -19,16 +19,13 @@ var index_list_json = {{ result_json | safe}}
 var result_list_json = [];
 var columns_set = [];
 $(function() {
-    for(var key in index_list_json)
-    {
-        result_list_json.push(index_list_json[key]);
-    }
+
 
     for(var key in index_list_json)
     {
         for(var item in index_list_json[key])
         {
-            var single_set = 
+            var single_set =
             {
                 title: '',
                 field: '',
@@ -56,7 +53,7 @@ $(function() {
             });
         
     $table.bootstrapTable({
-                data: result_list_json,
+                data: index_list_json,
                 columns: columns_set,
                 search: true
             });

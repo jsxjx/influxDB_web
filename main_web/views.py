@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from decode_all_function import MERGE_DECODE_LIST
-from models import save_decode_list_to_hbase
+
 
 import time,datetime
 import socket
