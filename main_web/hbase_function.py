@@ -1,6 +1,5 @@
 #coding=utf-8
 
-
 import time
 import csv
 from collections import OrderedDict
@@ -88,11 +87,11 @@ class Echarts_option():
                 print "key,value"
                 print key,value
                 if key in list_WQAR512_para_index:
-                    if list_WQAR512_para_index.index(key) >= 796:
+                    if list_WQAR512_para_index.index(key) >= 632:
                         list_echart_index_of_logic.append(index)
                         break
                 elif key in list_WQAR256_para_index:
-                    if list_WQAR256_para_index.index(key) >= 644:
+                    if list_WQAR256_para_index.index(key) >= 474:
                         list_echart_index_of_logic.append(index)
                         break
 
