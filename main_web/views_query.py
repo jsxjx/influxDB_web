@@ -42,25 +42,30 @@ def ajax_some_para(request):
     stencil_object = Stencil.objects.get(NAME = post_NAME)
 
     list_3C, list_7 = LIST_to_STR().make_para_id_list()
+    list_units_3C, list_units_7 = LIST_to_STR().make_para_units_list()
     list_WQAR256 = list_str.str_to_int(stencil_object.WQAR_737_3C)
     list_WQAR512 = list_str.str_to_int(stencil_object.WQAR_737_7)
     ac_wqar_config = AC_WQAR_CONFIG()
 
     echarts_option_256 = stencil_object.echarts_737_3C
     echarts_option_512 = stencil_object.echarts_737_7
-
+    dic_units = {}
     list_para_name = []
     if aircraft_id in ac_wqar_config.WQAR512_SERISE_list:
         model = list_WQAR512
+        list_units = list_units_7
         ac_conf = '737_7'
         for item in model:
             list_para_name.append(list_7[int(item)])
+            dic_units[list_7[int(item)] ]= list_units[int(item)]
         str_echarts_option = echarts_option_512
     elif aircraft_id in ac_wqar_config.WQAR256_SERISE_list:
         model = list_WQAR256
+        list_units = list_units_3C
         ac_conf = '737_3C'
         for item in model:
             list_para_name.append(list_3C[int(item)])
+            dic_units[list_3C[int(item)] ]= list_units[int(item)]
         str_echarts_option = echarts_option_256
     else:
         return HttpResponse("无此机号")
@@ -77,12 +82,12 @@ def ajax_some_para(request):
     new_df = query_result.fillna('-')
     list_c1_c2 = new_df.to_dict(orient="records")
     para_name_dic = {}
-    para_unit_dic = {}
+
     for key in list_c1_c2[0]:
         para_name_dic[key] = key
-        para_unit_dic[key] = ''
+
     list_c1_c2.insert(0, para_name_dic)
-    list_c1_c2.append(para_unit_dic) # 单位暂时不加上,待填坑
+    list_c1_c2.append(dic_units) # 单位暂时不加上,待填坑
 
     # 传递echarts设置信息
     ec_op = Echarts_option()

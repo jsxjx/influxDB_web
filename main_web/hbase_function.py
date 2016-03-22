@@ -48,6 +48,32 @@ class LIST_to_STR():
 
         return list_WQAR256_para_index, list_WQAR512_para_index
 
+    def opencsv_units(self, csv_file_name,logic_begin_row):
+        #读取csv逻辑参数列表，解码大量逻辑参数
+        f = open(csv_file_name,'rb')
+        reader = csv.reader(f)
+        list_index = []
+        count = 1
+        for row in reader:
+            if count <= logic_begin_row:
+                para_id_number = reader.line_num - 1
+                para_id_name = row[7]
+                list_index.append(para_id_name)
+            else:
+                list_index.append('')
+            count = count + 1
+        return list_index
+
+    def make_para_units_list(self):
+        csv_name_list = ['737-3C ALL.csv', '737-7 ALL.csv']
+        list_WQAR256_para_index = []
+        list_WQAR512_para_index = []
+
+        list_WQAR256_para_index = list_WQAR256_para_index + self.opencsv_units(csv_name_list[0],475)
+        list_WQAR512_para_index = list_WQAR512_para_index + self.opencsv_units(csv_name_list[1],633)
+
+        return list_WQAR256_para_index, list_WQAR512_para_index
+
 class Echarts_option():
 
     def __init__(self):
@@ -87,11 +113,11 @@ class Echarts_option():
                 print "key,value"
                 print key,value
                 if key in list_WQAR512_para_index:
-                    if list_WQAR512_para_index.index(key) >= 632:
+                    if list_WQAR512_para_index.index(key) > 632:
                         list_echart_index_of_logic.append(index)
                         break
                 elif key in list_WQAR256_para_index:
-                    if list_WQAR256_para_index.index(key) >= 474:
+                    if list_WQAR256_para_index.index(key) > 474:
                         list_echart_index_of_logic.append(index)
                         break
 
