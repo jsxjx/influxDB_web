@@ -40,4 +40,5 @@ urlpatterns = [
     url(r'^stencil_list/$', 'main_web.views_stencil.stencil_list'),
     url(r'^edit_stencil/(.+)/$', 'main_web.views_stencil.edit_stencil', name = 'edit_stencil'),
     url(r'^stencil_echarts/$', 'main_web.views_stencil.stencil_echarts', name = 'stencil_echarts'),
+    url(r'^import_stencil_hbase/$', 'main_web.tests.import_stencil_hbase')
 ]

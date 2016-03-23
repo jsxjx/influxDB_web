@@ -34,15 +34,15 @@ def storing_stencil_ajax(request):
     str_para_256 = list_str.int_to_str(para_256_decode)
     str_para_512 = list_str.int_to_str(para_512_decode)
 
-    if Stencil.objects.get_or_create(
+    if not Stencil.objects.all().filter(NAME = str_stencil_name).exists():
+        Stencil.objects.get_or_create(
         NAME = str_stencil_name,
         WQAR_737_7 = str_para_512,
         WQAR_737_3C =  str_para_256,
         ATA = ata,
         CREATOR = creator_decode,
         echarts_737_7 = ';;',
-        echarts_737_3C = ';;'):
-
+        echarts_737_3C = ';;')
         #回传前端，反馈结果
         para_256_post = ','.join(para_256_decode)
         para_512_post = ','.join(para_512_decode)
