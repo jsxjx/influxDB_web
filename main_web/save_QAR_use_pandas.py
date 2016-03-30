@@ -99,7 +99,7 @@ def put_data_to_influxDB(list_qar, file_name):
     print u"分割数： %s" % cut_number
     list_cut = div_list(list_no_head, cut_number)
     start_write_time = time.time()
-    p = Pool()
+    p = Pool(6)
     for i in range(cut_number):
         start_num = 0 + i * 200
         end_num = 0 + 200 + i * 200
