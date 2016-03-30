@@ -51,7 +51,7 @@ def ajax_some_para(request):
     echarts_option_512 = stencil_object.echarts_737_7
     dic_units = {}
     list_para_name = []
-    if aircraft_id in ac_wqar_config.WQAR512_SERISE_list:
+    if aircraft_id in ac_wqar_config.WQAR_7_SERISE_list:
         model = list_WQAR512
         list_units = list_units_7
         ac_conf = '737_7'
@@ -59,7 +59,7 @@ def ajax_some_para(request):
             list_para_name.append(list_7[int(item)])
             dic_units[list_7[int(item)] ]= list_units[int(item)]
         str_echarts_option = echarts_option_512
-    elif aircraft_id in ac_wqar_config.WQAR256_SERISE_list:
+    elif aircraft_id in ac_wqar_config.WQAR_3C_SERISE_list:
         model = list_WQAR256
         list_units = list_units_3C
         ac_conf = '737_3C'

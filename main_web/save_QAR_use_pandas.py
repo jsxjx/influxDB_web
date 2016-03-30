@@ -159,7 +159,7 @@ class PUT_DATA():
             dir_path = r'G:\QAR_DATA\append_upload'
         else:
             #服务器电脑路径
-            dir_path = '/opt/QAR_DATA/hbase_append_upload'
+            dir_path = '/opt/QAR_DATA/append_upload'
 
         if os.listdir(dir_path):
             print u"工程部数据有更新，开始译码"
