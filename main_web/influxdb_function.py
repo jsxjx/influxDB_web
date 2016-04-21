@@ -29,7 +29,7 @@ class influxDB_interface():
         return clientdb
 
     def inf_query(self, dbname, value, mes):
-        sql_str = "SELECT " + value + " FROM " + mes
+        sql_str = "SELECT " + value + " FROM " + mes + " ORDER BY time DESC "
         result = self.DFclient(dbname).query(sql_str)
         return result
 
