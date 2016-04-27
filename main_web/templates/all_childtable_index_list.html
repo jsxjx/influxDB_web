@@ -35,9 +35,18 @@ $(function() {
             };
             if(item!="AC_sector")
             {
-                single_set["title"] = item;
-                single_set["field"] = item;
-                columns_set.push(single_set);
+                if(item=="update_time")
+                {
+                    single_set["title"] = "update_time BJS";
+                    single_set["field"] = item;
+                    columns_set.push(single_set);
+                }
+                else
+                {
+                    single_set["title"] = item;
+                    single_set["field"] = item;
+                    columns_set.push(single_set);
+                }
             }
         }
         break;
