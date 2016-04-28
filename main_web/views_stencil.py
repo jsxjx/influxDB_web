@@ -4,7 +4,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from hbase_function import LIST_to_STR
+from list2string_and_echarts_function import LIST_to_STR
 from main_web.models import Stencil
 
 

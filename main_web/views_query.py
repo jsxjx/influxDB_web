@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from aircraft_config import AC_WQAR_CONFIG
-from hbase_function import Echarts_option
-from hbase_function import LIST_to_STR
+from list2string_and_echarts_function import Echarts_option
+from list2string_and_echarts_function import LIST_to_STR
 from influxdb_function import influxDB_interface
 from main_web.models import Stencil
 
