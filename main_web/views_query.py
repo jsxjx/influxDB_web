@@ -2,7 +2,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-
 from aircraft_config import AC_WQAR_CONFIG
 from hbase_function import Echarts_option
 from hbase_function import LIST_to_STR

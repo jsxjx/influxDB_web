@@ -1,8 +1,6 @@
 #coding=utf-8
 
-import time
 import csv
-from collections import OrderedDict
 
 
 class LIST_to_STR():

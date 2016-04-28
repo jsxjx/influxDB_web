@@ -1,7 +1,6 @@
 #coding=utf-8
 
 from influxdb import DataFrameClient
-from influxdb import InfluxDBClient
 from IP_judge import LOCAL
 
 def add_sign(string1):

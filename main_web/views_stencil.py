@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from hbase_function import LIST_to_STR
-from aircraft_config import AC_WQAR_CONFIG
 import json
 from main_web.models import Stencil
 
