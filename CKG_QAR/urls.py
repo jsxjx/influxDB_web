@@ -22,8 +22,6 @@ urlpatterns = [
     #主页，首页
     url(r'^$', 'main_web.views.home', name='home'),
     url(r'^home/$', 'main_web.views.home', name='home'),
-    #译码存储
-    url(r'^storing_data/$', 'main_web.views.storing_data'),
     #查询页面
     url(r'^all_childtable_index_list/$','main_web.views_query.all_childtable_index_list',
         name = 'all_childtable_index_list'),
@@ -40,6 +38,4 @@ urlpatterns = [
     url(r'^stencil_list/$', 'main_web.views_stencil.stencil_list'),
     url(r'^edit_stencil/(.+)/$', 'main_web.views_stencil.edit_stencil', name = 'edit_stencil'),
     url(r'^stencil_echarts/$', 'main_web.views_stencil.stencil_echarts', name = 'stencil_echarts'),
-    #同步数据并译码
-    url(r'^sync_and_decode/$','main_web.FTP_sync_by_myself.sync_and_decode')
 ]

@@ -10,7 +10,3 @@ import socket
 
 def home(request):
     return render(request, 'home.html')
-
-def storing_data(request):
-
-    return HttpResponse("已完成数据存入")
