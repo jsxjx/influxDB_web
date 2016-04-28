@@ -1,10 +1,12 @@
 #coding=utf-8
-from django.shortcuts import render
+import json
+
 from django.http import HttpResponse
+from django.shortcuts import render
 
 from hbase_function import LIST_to_STR
-import json
 from main_web.models import Stencil
+
 
 def storing_stencil(request):
     return render(request, 'storing_stencil_html.html')

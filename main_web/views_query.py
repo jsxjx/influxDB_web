@@ -1,13 +1,15 @@
 # coding:utf-8
-from django.shortcuts import render
+import json
+
 from django.http import HttpResponse
+from django.shortcuts import render
 
 from aircraft_config import AC_WQAR_CONFIG
 from hbase_function import Echarts_option
 from hbase_function import LIST_to_STR
 from influxdb_function import influxDB_interface
-import json
 from main_web.models import Stencil
+
 
 def all_childtable_index_list(request):
     infdb_if = influxDB_interface()
