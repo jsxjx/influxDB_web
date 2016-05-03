@@ -273,8 +273,30 @@ function make_chart_option(list_config, post_data, option)
             "name": series_name,
             "type": list_config[series_name],
             "data": option_series_data,
+            "symbolSize" : 4,
             "large": true,
-            "sampling":'nearest',
+            "sampling": function (frame) {
+                var max = -Infinity;
+                for (var i = 0; i < frame.length; i++) {
+                    frame[i] > max && (max = frame[i]);
+                }
+                var min = Infinity;
+                for (var i = 0; i < frame.length; i++) {
+                    frame[i] < min && (min = frame[i]);
+                }
+                var sum = 0;
+                var count = 0;
+                var average = 0;
+                for (var i = 0; i < frame.length; i++) {
+                    if (!isNaN(frame[i])) {
+                        sum += frame[i];
+                        count++;
+                    }
+                }
+                // Return NaN if count is 0
+                count === 0 ? average = 0 :average = sum / count;
+                return (max - 0) >= (0 - min) ? max : min;
+            }
         }
         option["series"].push(option_series_config);
         option["legend"]["data"].push(series_name);
