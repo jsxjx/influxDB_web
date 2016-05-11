@@ -38,4 +38,6 @@ urlpatterns = [
     url(r'^stencil_list/$', 'main_web.views_stencil.stencil_list'),
     url(r'^edit_stencil/(.+)/$', 'main_web.views_stencil.edit_stencil', name = 'edit_stencil'),
     url(r'^stencil_echarts/$', 'main_web.views_stencil.stencil_echarts', name = 'stencil_echarts'),
+    #趋势
+    url(r'^tendency_EGT/$', 'main_web.views_query.tendency_EGT')
 ]
