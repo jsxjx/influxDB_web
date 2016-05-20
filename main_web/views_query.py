@@ -18,10 +18,10 @@ def all_childtable_index_list(request):
     result_json = df.to_json(orient="records")
     return render(request, 'all_childtable_index_list.html',{'result_json': result_json})
 
-def tendency_EGT(request):
+def tendency_total(request):
     infdb_if = influxDB_interface()
-    sector_index = infdb_if.inf_query("DB_sector_index", "*", "tendency")
-    df = sector_index['tendency']
+    sector_index = infdb_if.inf_query("DB_sector_index", "*", "tendency_total")
+    df = sector_index['tendency_total']
     result_json = df.to_json(orient="records")
     return render(request, 'all_childtable_index_list.html', {'result_json': result_json})
 
