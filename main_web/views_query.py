@@ -20,7 +20,7 @@ def all_childtable_index_list(request):
 
 def tendency_total(request):
     infdb_if = influxDB_interface()
-    sector_index = infdb_if.inf_query("DB_sector_index", "*", "tendency_total")
+    sector_index = infdb_if.inf_query("tendency", "*", "tendency_total")
     df = sector_index['tendency_total']
     result_json = df.to_json(orient="records")
     return render(request, 'all_childtable_index_list.html', {'result_json': result_json})
