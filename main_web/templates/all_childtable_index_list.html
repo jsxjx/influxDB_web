@@ -64,8 +64,15 @@ $(function() {
     $table.bootstrapTable({
                 data: index_list_json,
                 columns: columns_set,
-                search: true
+                search: true,
+                height: getHeight()
             });
+
+    $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });
     
 });
 
@@ -78,6 +85,10 @@ function flightFormatter(value) {
         '<a href="' + the_url + '" target="_blank">' + "进入" + '</a>'
     ].join('');
 }
+
+function getHeight() {
+        return $(window).height() - $('h2').outerHeight(true);
+    }
 
 </script>
 
