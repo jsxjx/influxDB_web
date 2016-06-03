@@ -1,31 +1,53 @@
 {% extends "base.html" %}
 {% block maincontents %}
-<div class="content-section">
-    <div class="container">
-        <h2>请选择参数模版：</h2>
-        <form action="/ajax_some_para/"  role="form">
-            <div class=“form-group”>
-                <div class="form-inline">
-                    <label>模版选择</label><br>
-                    <select name="configuration" id="id_conf" class="form-control">
-                        {% for option_dict in stencil_option %}
-                            <option value= "{{ option_dict.NAME}}">{{ option_dict.NAME }}</option>
-                        {% endfor %}
-                    </select>
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+    <div id="content-header">
+        <div id="breadcrumb">
+            <a href="index.html" title="首页" class="tip-bottom">
+                <i class="icon-home"></i> 首页</a>
+        </div>
+    </div>
+<!--End-breadcrumbs-->
+<!--详细信息列表 -->
+    <div class="row-fluid">
+        <div class="widget-box">
+            <div class="widget-title bg_lg">
+                <span class="icon">
+                    <i class="icon-plane"></i>
+                </span>
+                <h5>请选择参数模版：</h5>
+            </div>
+            <div class="widget-content">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form action="/ajax_some_para/"  role="form">
+                            <div class=“form-group”>
+                                <div class="form-inline">
+                                    <label>模版选择</label><br>
+                                    <select name="configuration" id="id_conf" class="form-control">
+                                        {% for option_dict in stencil_option %}
+                                            <option value= "{{ option_dict.NAME}}">{{ option_dict.NAME }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="submit" value="查询" id="set" class="btn btn-default" />
+                        </form>
+                        <table id="table" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true"
+                        data-show-columns="true">
+                        </table>
+                        <div id="main1" style="height:0px"></div>
+                        <div id="main2" style="height:0px"></div>
+                        <div id="main3" style="height:0px"></div>
+                    </div>
                 </div>
             </div>
-            <input type="submit" value="查询" id="set" class="btn btn-default" />
-        </form>
-        
-        <table id="table" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true">
-        </table>
-        <div id="main1" style="height:0px"></div>
-        <div id="main2" style="height:0px"></div>
-        <div id="main3" style="height:0px"></div>
+        </div>
     </div>
-    <!-- /container -->
 </div>
-<!--/.content-section -->
+
 <script src="/static/echarts_3.0.2/echarts.min.js"></script>
 <script>
 

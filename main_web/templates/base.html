@@ -1,215 +1,60 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>AMECO CKG - 基于QAR的辅助排故系统</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <link href="/static/useso_font/useso_font.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/normalize.min.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/animate.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/templatemo-misc.css">
-    <link rel="stylesheet" href="/static/bootstrap/css/templatemo-style.css">
-    <script src="/static/bootstrap/js/vendor/modernizr-2.6.2.min.js"></script>
-    
-    <!-- jquery and Bootstrap css js -->
-    <script src="/static/jquery/jquery-1.11.3.min.js"></script>
-    <script src="/static/bootstrap_table/bootstrap.min.js"></script>
-    <!-- Bootstrap table css js -->
-    <link href="/static/bootstrap_table/bootstrap-table.css" rel="stylesheet">
-    
-    
-    <script src="/static/bootstrap_table/bootstrap-table.js"></script>
-    <script src="/static/bootstrap_table/locale/bootstrap-table-zh-CN.js"></script>
-    <!-- Bootstrap table toolbar js -->
-    <script src="/static/bootstrap_table/extensions/toolbar/bootstrap-table-toolbar.js"></script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<meta name="description" content="基于QAR数据的辅助排故系统">
+<meta name="author" content="北京飞机维修工程有限公司-重庆分公司，基于QAR数据的辅助排故系统">
+<title>基于QAR辅助排故系统</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/static/js/datetimepicker/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="/static/css/matrix-style.css" />
+<link rel="stylesheet" href="/static/css/matrix-media.css" />
+<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="/static/css/bootstrap-table.css" />
+
+<script src="/static/js/jquery.min.js"></script> 
+<script src="/static/js/bootstrap.min.js"></script> 
+<script src="/static/js/matrix.js"></script>
+<script src="/static/select2/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-table.js" ></script>
+<script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+
 </head>
-
-
-
-
 <body>
 
-<div class="main-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7 col-sm-7 col-xs-8">
-                <div class="logo">
-                    <a href="/home/"><img src="/static/image/logo.jpg"></a>
-                    <!-- <h1><a href="/home/">AMECO CKG</a></h1> -->
-                </div>
-                <!-- /.logo -->
-            </div>
-            <!-- /.col-md-4 -->
-            <div class="col-md-5 col-sm-3">
-                <h2 class="widget-title">
-                    基于QAR数据的辅助排故系统
-                </h2>
-            </div>
-        </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container -->
+<!--Header-part logo-->
+<div id="header">
+  <h1></h1>
 </div>
-<!-- /.main-header -->
+<!--close-Header-part--> 
 
-<div class="main-nav">
-    <div class="container">
-        <div class="row">
-            <div>
-                <div class="list-menu">
-                    <ul>
-                        <font face="微软雅黑" color="#000000">
-                            <li><a href="/home/">首页</a></li>
-                            <li><a href="/all_childtable_index_list/">航班列表</a></li>
-                            <li><a href="/storing_stencil/">自建模版</a></li>
-                            <li><a href="/stencil_list/">模板列表</a></li>
-                            <li><a href="/tendency_total/">趋势统计</a></li>
-                        </font>
-                    </ul>
-                </div>
-                <!-- /.list-menu -->
-            </div>
-            <!-- /.col-md-6 -->
-            <div class="col-md-6 col-sm-5">
-                <div class="notification">
-                    <span></span>
-                </div>
-            </div>
-            <!-- /.col-md-6 -->
-        </div>
-        <!-- /.row -->
-    </div>
-    <!-- /.container -->
+<!--侧边菜单-->
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 首页</a>
+  <ul>
+    <li><a href="/home/"><i class="icon icon-home"></i> <span>首页</span></a> </li>
+    <li> <a href="/all_childtable_index_list/"><i class="icon icon-dashboard"></i> <span>航班列表</span></a> </li>
+    <li> <a href="/storing_stencil/"><i class="icon icon-plane"></i> <span>自建模版</span></a> </li>
+    <li> <a href="/stencil_list/"><i class="icon icon-inbox"></i> <span>模板列表</span></a> </li>
+    <li> <a href="/tendency_total/"><i class="icon icon-inbox"></i> <span>趋势统计</span></a> </li>
+  </ul>
 </div>
-<!-- /.main-nav -->
+<!--sidebar-menu-->
 
 
 {% block maincontents %}
     <p>这里放页面内容</p>
 {% endblock %}
 
-<footer class="site-footer">
-    <div class="our-partner">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="customNavigation">
-                        <a class="btn prev"><i class="fa fa-angle-left"></i></a>
-                        <a class="btn next"><i class="fa fa-angle-right"></i></a>
-                    </div>
-                    <div id="owl-demo" class="owl-carousel">
-                        <div class="item">
-                            <a href="http://10.9.199.42:7001/kkx/">
-                                <img src="/static/bootstrap/images/friend_logo_kekao.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://10.10.102.102/oracle/busi_his_flt_query.asp">
-                                <img src="/static/bootstrap/images/friend_logo_taijin.png" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://intranet.airchina.com.cn/">
-                                <img src="/static/bootstrap/images/friend_logo_gongcheng.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://safety.caac.gov.cn/">
-                                <img src="/static/bootstrap/images/firend_logo_anquan.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://10.10.173.200:81/">
-                                <img src="/static/bootstrap/images/friend_logo_ziyuan.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://172.20.102.23/">
-                                <img src="/static/bootstrap/images/friend_logo_chengdu.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href="http://intranet.airchina.com.cn/">
-                                <img src="/static/bootstrap/images/friend_logo_ca.jpg" width="170" height="80" alt=""></a>
-                        </div>
-                    </div>
-                    <!-- /#owl-demo -->
-                </div>
-                <!-- /.col-md-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.our-partner -->
-    <div class="main-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="footer-widget">
-                        <h3 class="widget-title">关于</h3> 本系统应用于737-NG的-7和-3C构型
-                        <br>QAR数据译码，分析，统计
-                    </div>
-                    <!-- /.footer-widget -->
-                </div>
-                <!-- /.col-md-3 -->
-                <div class="col-md-3">
-                    <div class="footer-widget">
-                        <h3 class="widget-title">Why Choose Us?</h3> 快捷
-                        <br>
-                        <br>可靠
-                        <br>
-                        <br>及时
-                    </div>
-                    <!-- /.footer-widget -->
-                </div>
-                <!-- /.col-md-3 -->
-                <div class="col-md-2">
-                    <div class="footer-widget">
-                        <h3 class="widget-title">Useful Links</h3>
-                        <ul>
-                            <li><a href="/home/">首页</a></li>
-                            <li><a href="/statistics/">统计</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.footer-widget -->
-                </div>
-                <!-- /.col-md-2 -->
-                <div class="col-md-4">
-                </div>
-                <!-- /.col-md-4 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.main-footer -->
-    <div class="bottom-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <span>Copyright &copy; 2015 <a href="/home/" target="_blank" title="AMECO">AMECO CKG</a></span>
-                </div>
-                <!-- /.col-md-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.bottom-footer -->
-</footer>
-<!-- /.site-footer -->
-<script src="/static/bootstrap/js/vendor/jquery-1.10.1.min.js"></script>
-<script>
-window.jQuery || document.write('<script src="/static/bootstrap/js/vendor/jquery-1.10.1.min.js"><\/script>')
-</script>
-<script src="/static/bootstrap/js/jquery.easing-1.3.js"></script>
-<script src="/static/bootstrap/js/bootstrap.js"></script>
-<script src="/static/bootstrap/js/plugins.js"></script>
-<script src="/static/bootstrap/js/main.js"></script>
+<div class="row-fluid">
+  <div id="footer" class="span12"> Copyright &copy; 2015-2016  AMECO CKG</div>
+</div>
+
+
+
 </body>
 
 </html>

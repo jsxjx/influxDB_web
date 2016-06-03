@@ -1,93 +1,107 @@
 {% extends "base.html" %}
 {% block maincontents %}
-<div class="content-section">
-    <div class="container">
-        <div class="page-header">
-        	<h2>模板基础信息：</h2>
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+    <div id="content-header">
+        <div id="breadcrumb">
+            <a href="index.html" title="首页" class="tip-bottom">
+                <i class="icon-home"></i> 首页</a>
         </div>
-        <table id="table" data-sort-name="stargazers_count" data-sort-order="desc" data-page-size="15" data-page-list="[15,30,66,100]" >
-
-        </table>
     </div>
-    <div class="container">
-        <div class="page-header">
-        	<h2>737-3C 构型图表设置：</h2>
-            <form action="/stencil_echarts/" role="form" id="from_echarts">
-            <font face="微软雅黑" size="4" color="#000000">
-                <table class="table">
-                {% for id_para in result_json_256 %}
-                <tr>
-                    <th>
-                        {{ id_para }}
-                    </th>
-                    <th>
-                        第<select id = "{{ id_para }}~" name = "chart_number">
-                        <option value="None" >--</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        </select>张表&nbsp;&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        参数类型：
-                        <select id= "{{ id_para }}" name = "chart_type">
-                        <option value="None">--</option>
-                        <option value="line">折线</option>
-                        <option value="bar">柱状</option>
-                        <option value="scatter">散点</option>
-                        </select>
-                    </th>
-                    
-                </tr>
-                {% endfor %}
-                </table>
+    <div class="row-fluid">
+        <div class="widget-box">
+            <div class="widget-title bg_lg">
+                <span class="icon">
+                    <i class="icon-plane"></i>
+                </span>
+                    <h5>模板基础信息：</h5>
+            </div>
+            <div class="widget-content">
+                    <div class="row-fluid">
         
-            </font>
-            </form>
-    	</div>
-    	
-    </div>
-    <!-- /container -->
-    <div class="container">
-        <div class="page-header">
-            <h2>737-7 构型图表设置：</h2>
-            <form action="/stencil_echarts/" role="form" id="from_echarts_512">
-            <font face="微软雅黑" size="4" color="#000000">
-                <table class="table">
-                {% for id_para in result_json_512 %}
-                <tr>
-                    <th>
-                        {{ id_para }}
-                    </th>
-                    <th>
-                        第<select id = "{{ id_para }}~" name = "chart_number">
-                        <option value="None" >--</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        </select>张表&nbsp;&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        参数类型：
-                        <select id= "{{ id_para }}" name = "chart_type">
-                        <option value="None">--</option>
-                        <option value="line">折线</option>
-                        <option value="bar">柱状</option>
-                        <option value="scatter">散点</option>
-                        </select>
-                    </th>
-                    
-                </tr>
-                {% endfor %}
-                </table>
-                <input   value="录入" id="set_512" class="btn btn-default" />
-            </font>
-            </form>
-            <p>录入结果: <span id='result_512'></span></p>
+                        <table id="table" data-sort-name="stargazers_count" data-sort-order="desc" data-page-size="15" data-page-list="[15,30,66,100]" >
+                        </table>
+                    </div>
+            <div class="container">
+                <div class="page-header">
+                	<h2>737-3C 构型图表设置：</h2>
+                    <form action="/stencil_echarts/" role="form" id="from_echarts">
+                    <font face="微软雅黑" size="4" color="#000000">
+                        <table class="table">
+                        {% for id_para in result_json_256 %}
+                        <tr>
+                            <th>
+                                {{ id_para }}
+                            </th>
+                            <th>
+                                第<select id = "{{ id_para }}~" name = "chart_number">
+                                <option value="None" >--</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                </select>张表&nbsp;&nbsp;&nbsp;
+                            </th>
+                            <th>
+                                参数类型：
+                                <select id= "{{ id_para }}" name = "chart_type">
+                                <option value="None">--</option>
+                                <option value="line">折线</option>
+                                <option value="bar">柱状</option>
+                                <option value="scatter">散点</option>
+                                </select>
+                            </th>
+                            
+                        </tr>
+                        {% endfor %}
+                        </table>
+                
+                    </font>
+                    </form>
+            	</div>
+            	
+            </div>
+            <!-- /container -->
+            <div class="container">
+                <div class="page-header">
+                    <h2>737-7 构型图表设置：</h2>
+                    <form action="/stencil_echarts/" role="form" id="from_echarts_512">
+                    <font face="微软雅黑" size="4" color="#000000">
+                        <table class="table">
+                        {% for id_para in result_json_512 %}
+                        <tr>
+                            <th>
+                                {{ id_para }}
+                            </th>
+                            <th>
+                                第<select id = "{{ id_para }}~" name = "chart_number">
+                                <option value="None" >--</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                </select>张表&nbsp;&nbsp;&nbsp;
+                            </th>
+                            <th>
+                                参数类型：
+                                <select id= "{{ id_para }}" name = "chart_type">
+                                <option value="None">--</option>
+                                <option value="line">折线</option>
+                                <option value="bar">柱状</option>
+                                <option value="scatter">散点</option>
+                                </select>
+                            </th>
+                            
+                        </tr>
+                        {% endfor %}
+                        </table>
+                        <input   value="录入" id="set_512" class="btn btn-default" />
+                    </font>
+                    </form>
+                    <p>录入结果: <span id='result_512'></span></p>
+                </div>     
+            </div>
         </div>
-        
-    </div>
-    <!-- /container -->
+    </div>            <!-- /container -->
 </div>
 
 <script>

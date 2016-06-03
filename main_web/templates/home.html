@@ -1,105 +1,158 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block maincontents %}
 
-<div class="content-section">
-    <div class="container">
-        <div class="row">
-			<div class="col-sm-4">
-                    <div class="page-header">
-                        <h3 class="widget-title">按条件查询</h3>
-                    </div>
-                    <div class="jumbotron">
-                    <form action="/single_para_query/" method="post" role="form">
-                    {% csrf_token %}
-                      <div class=“form-group”>
-                        <div class="form-inline">
-                        <label for="firstname">日期</label>
-                        <input type="text" name="firstname" class="form-control" id="firstname"/>
-                        </div>
-                        <div class="form-inline">
-                            <label>日期格式：YYYY-MM-DD </label>
-                        </div>
-                        <div class="form-inline">
-                        <label>机号</label>
-                        <input type="text" name="lastname" class="form-control"/>
-                        </div>
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+  	<div id="breadcrumb" class="text-center"> <a href="index.html" title="基于QAR辅助排故系统"><h3>737NG 基于QAR辅助排故系统</h3></a></div>
+  </div>
+<!--End-breadcrumbs-->
 
-                        <div class="form-inline">
-                            <label>机号格式：B-XXXX </label>
-                        </div>
+<!--首页菜单 boxes-->
+    <div class="quick-actions_homepage">
+      <ul class="quick-actions">
+        <li class="bg_lg"> <a href="/all_childtable_index_list/"> <i class="icon-dashboard"></i> 航班列表</a> </li>
+        <li class="bg_ly"> <a href="/storing_stencil/"> <i class="icon-plane"></i> 自建模版 </a> </li>
+        <li class="bg_lo"> <a href="/stencil_list/"> <i class="icon-bar-chart"></i> 模板列表</a> </li>
+        <li class="bg_ls"> <a href="/tendency_total/"> <i class="icon-bar-chart"></i> 趋势统计</a> </li>
+        <!--<li class="bg_lb"> <a href="interface.html"> <i class="icon-pencil"></i>全参数译码</a> </li>-->
+      </ul>
+    </div>
+<!--End-Action boxes-->    
 
-                        <div class="form-inline">
-                            <label>ATA</label>
-                            <select class="form-control" onchange="ChangeFault();" name="ATA" id="ata">
-                                <option>71</option>
-                                <option>24</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>模板选择</label>
-                            <select name="fault" class="form-control" id="fault">
-                                <option value="all">发动机主要参数</option>
-                            </select>
-                        </div>
-                      </div>
-                    <input type="submit" value="开始查询" class="btn btn-default"/>
-                    </form>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header">
-                        <h3 class="widget-title">最新航段数据</h3>
-                </div>
-                <div >
-                    <table data-toggle="table"
-                            >
-                    <thead>
-                        <th><h4>机号</h4></th>
-                        <th><h4>航班号</h4></th>
-                        <th><h4>上传日期</h4></th>
-                        <th><h4>上传时间</h4></th>
-                        <th><h4>EGT最大值</h4></th>
-                    </thead>
-                    {% for line in list_data %}
-                    <tr>
-                        <td><h4><a href="{% url 'TREND_VIB' line.Aircraft_Identification %}" target="_blank">{{ line.Aircraft_Identification }}</a></h4></td>
-                        <td><h4>{{ line.FLT_Number }}</h4></td>
-                        <td><h4>{{ line.updata_Date }}</h4></td>
-                        <td><h4>{{ line.updata_Time }}</h4></td>
-                        <td><h4><a href="{% url 'RUNUP_son' line.table_name %}" target="_blank">{{ line.EGT_max }}</a></h4></td>
-                    </tr>
-                    {% endfor %}
-                    </table>
-                </div>
-            </div><!-- col-sm-5 -->
+
+
+<!--Chart-box-->    
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-search"></i></span>
+          <h5>按条件查询</h5>
         </div>
-    </div> <!-- /container -->
-</div><!--/.content-section -->
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div class="span12">
+              <form action="" method="post" role="form">
+                    	<div class="span3">
+                    			<label><b>日期</b></label>
+                    			<input id="date" type="text" class=".span3" name="datetime" placeholder="请点击选择日期">
+                    	</div>
+									  	<div class="span3"><label><b>机号</b></label><input type="text" class=".span3" name="lastname" placeholder="机号格式:B-XXXX"></div>
+										  <div class="span2">
+										  		<label><b>ATA</b></label>
+										  		<select class="input-small">
+	                            <option>71</option>
+	                            <option>24</option>
+	                        </select>
+										  </div>
+										  <div class="span4">
+										  		<label><b>模板选择</b></label>
+										  		<select name="fault" class=".span3" id="fault">
+                            <option value="all">发动机主要参数</option>
+                        </select>
+										  </div>
+										  <div class="col-sm-12">
+										  		<button class="btn btn-primary" type="submit"><i class="icon-search"></i>&ensp;开始查询</button>
+										  </div>
+                    </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--最新航班列表 -->
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-plane"></i></span>
+          <h5>最新航段数据</h5>
+        </div>
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div class="span12">
+              <table class="table table-bordered table-hover">
+					  	<tr>
+					  		<th>机号</th><th>航班号</th><th>上传日期</th><th>上传时间</th><th>EGT最大值</th>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					  	<tr>
+					  		<td><a href="trend_vib.html">B-1527</a></td>
+					  		<td>CCA4545</td>
+					  		<td>2015-05-01</td>
+					  		<td>02:31:40</td>
+					  		<td><a href="runup.html">816</a></td>
+					  	</tr>
+					</table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--End-Chart-box--> 
+    
+      
+    </div>
+  </div>
+</div>
 
-<script type="text/javascript">
-function ChangeFault()
-{
-//alert("I am an alert box!!");
-var fault_select = document.getElementById("fault")
-var ata_select = document.getElementById("ata")
+<!--end-main-container-part-->
 
-var ata_number = ata_select.options[ata_select.selectedIndex].value
-//alert(ata_number);
-var length = fault_select.options.length;
 
-for(var i=length-1;i>=0;i--){
 
-    fault_select.options.remove(i);
 
-}
-if(ata_number == 24){
-    fault_select.options.add(new Option("燃油油量不平衡", "fuel"));
-}
+<script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.js" ></script>
+	<script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js" ></script>
+	<script>
+		$("#date").datetimepicker({ 
+			minView: "month", //选择日期后，不会再跳转去选择时分秒 
+			format: "yyyy-mm-dd", //选择日期后，文本框显示的日期格式
+			language: 'zh-CN', //汉化 
+			showMeridian: true,
+       		todayBtn: true,
+			autoclose:true //选择日期后自动关闭 
+		});
+	</script>
 
-if(ata_number == 71){
-    fault_select.options.add(new Option("发动机主要参数", "all"));
-}
-
-} 
-</script>
 {% endblock %}
+</body>
+</html>
