@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^all_childtable_index_list/$','main_web.views_query.all_childtable_index_list',
         name = 'all_childtable_index_list'),
     url(r'^childtable/(.+)/$', 'main_web.views_query.childtable', name = 'childtable'),
+    url(r'^runup_list/$', 'main_web.views_query.runup_list'),
     # 参数查询ajxa 模块
     url(r'^ajax_some_para/$', 'main_web.views_query.ajax_some_para',
         name = 'ajax_some_para'),
