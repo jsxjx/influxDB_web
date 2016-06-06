@@ -1,29 +1,14 @@
 {% extends "base.html" %}
 {% block maincontents %}
-
 <!--main-container-part-->
 <div id="content">
 <!--breadcrumbs-->
-  <div id="content-header">
-  	<div id="breadcrumb" class="text-center"> <a href="index.html" title="基于QAR辅助排故系统"><h3>737NG 基于QAR辅助排故系统</h3></a></div>
-  </div>
-<!--End-breadcrumbs-->
-
-<!--首页菜单 boxes-->
-    <div class="quick-actions_homepage">
-      <ul class="quick-actions">
-        <li class="bg_lg"> <a href="/all_childtable_index_list/"> <i class="icon-dashboard"></i> 航班列表</a> </li>
-        <li class="bg_ly"> <a href="/storing_stencil/"> <i class="icon-plane"></i> 自建模版 </a> </li>
-        <li class="bg_lo"> <a href="/stencil_list/"> <i class="icon-bar-chart"></i> 模板列表</a> </li>
-        <li class="bg_ls"> <a href="/tendency_total/"> <i class="icon-bar-chart"></i> 趋势统计</a> </li>
-        <!--<li class="bg_lb"> <a href="interface.html"> <i class="icon-pencil"></i>全参数译码</a> </li>-->
-      </ul>
+    <div id="content-header">
+        <div id="breadcrumb">
+            <a href="index.html" title="首页" class="tip-bottom">
+                <i class="icon-home"></i> 首页</a>
+        </div>
     </div>
-<!--End-Action boxes-->    
-
-
-
-<!--Chart-box-->    
 <div class="row-fluid">
     <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-search"></i></span>
@@ -56,36 +41,31 @@
         </div>
     </div>
 </div>
-
-
-    <!--最新航班列表 -->
+<!--End-breadcrumbs-->
+<!--详细信息列表 -->
     <div class="row-fluid">
-      <div class="widget-box">
-        <div class="widget-title bg_lg"><span class="icon"><i class="icon-plane"></i></span>
-          <h5>最新航段数据</h5>
-        </div>
-        <div class="widget-content" >
-          <div class="row-fluid">
-            <div class="span12">
-              <table id="table_list">
-            </table>
+        <div class="widget-box">
+            <div class="widget-title bg_lg">
+                <span class="icon">
+                    <i class="icon-plane"></i>
+                </span>
+                <h5>{{AC_id}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{date_start}}&nbsp;&nbsp;to&nbsp;&nbsp;{{date_end}}&nbsp;&nbsp;&nbsp;&nbsp;</h5>
             </div>
-          </div>
+            <div class="widget-content">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <table id="table_list" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true"
+                        data-show-columns="true"
+                        >
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-<!--End-Chart-box--> 
-    
-      
-    </div>
-  </div>
 </div>
 
 <!--end-main-container-part-->
-
-
-
-
 <script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script>
@@ -122,16 +102,11 @@ $(function(){
 }); 
 </script>
 <script>
-
-
-
 var $table = $('#table_list');
 var index_list_json = {{ result_json | safe}}
 var result_list_json = [];
 var columns_set = [];
 $(function() {
-
-
     for(var key in index_list_json)
     {
         for(var item in index_list_json[key])
@@ -174,10 +149,16 @@ $(function() {
         
     $table.bootstrapTable({
                 data: index_list_json,
-                columns: columns_set,   
+                columns: columns_set,
+                search: true,
+                height: getHeight()
             });
 
-    
+    $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });    
 });
 
 function flightFormatter(value) {
@@ -190,10 +171,10 @@ function flightFormatter(value) {
     ].join('');
 }
 
+function getHeight() {
+        return $(window).height() - $('h2').outerHeight(true);
+    }
 
 </script>
 
-
 {% endblock %}
-</body>
-</html>

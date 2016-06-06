@@ -9,6 +9,33 @@
                 <i class="icon-home"></i> 首页</a>
         </div>
     </div>
+<div class="row-fluid">
+    <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-search"></i></span>
+            <h5>按日期机号查询</h5>
+        </div>
+        <div class="widget-content">
+            <div class="row-fluid">
+                <div class="span12">
+                    <form action="/query_index/" method="post" role="form">
+                        {% csrf_token %}
+                        <div class="span2">
+                            <label><b>开始日期</b></label>
+                            <input id="date_start" type="text" class="input-small" name="date_start" placeholder="请点击选择">
+                        </div>
+                        <div class="span2">
+                            <label><b>结束日期</b></label>
+                            <input id="date_end" type="text" class="input-small" name="date_end" placeholder="请点击选择">
+                        </div>
+                        <div class="span3">
+                            <button class="btn btn-primary" type="submit"><i class="icon-search"></i>&ensp;开始查询</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--End-breadcrumbs-->
 <!--详细信息列表 -->
     <div class="row-fluid">
@@ -34,17 +61,47 @@
 </div>
 
 <!--end-main-container-part-->
-
+<script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script>
+$("#date_start").datetimepicker({
+    minView: "month", //选择日期后，不会再跳转去选择时分秒 
+    format: "yyyy-mm-dd", //选择日期后，文本框显示的日期格式
+    language: 'zh-CN', //汉化 
+    showMeridian: true,
+    todayBtn: true,
+    autoclose: true //选择日期后自动关闭 
+});
+$("#date_end").datetimepicker({
+    minView: "month", //选择日期后，不会再跳转去选择时分秒 
+    format: "yyyy-mm-dd", //选择日期后，文本框显示的日期格式
+    language: 'zh-CN', //汉化 
+    showMeridian: true,
+    todayBtn: true,
+    autoclose: true //选择日期后自动关闭 
+});
 
+$(function(){ 
+    var id = new Array(); 
+    var value = new Array('B-1527', 'B-1531', 'B-1738', 'B-1763', 'B-1765', 'B-1768', 'B-1942', 'B-1956', 'B-1959', 'B-1976', 'B-2612', 'B-2613', 'B-2649', 'B-2700', 'B-5198', 'B-5201', 'B-5202', 'B-5203', 'B-5214', 'B-5217', 'B-5220', 'B-5296', 'B-5297', 'B-5325', 'B-5327', 'B-5329', 'B-5390', 'B-5392', 'B-5398', 'B-5426', 'B-5443', 'B-5477', 'B-5486', 'B-5496', 'B-5582', 'B-5583', 'B-5622', 'B-5679', 'B-5682', 'B-5803', 'B-6496', 'B-6497', 'B-7181'); 
+   
+    var select = document.getElementById("AC_select"); 
+    for(var x = 0;x<value.length;x++){ 
+        var option = document.createElement("option"); 
+        option.setAttribute("value",value[x]);//设置option属性值 
+        option.appendChild(document.createTextNode(value[x])); 
+        select.appendChild(option);//向select增加option 
+    } 
 
+    select.options[0].selected = true;//设置默认选中第一个
+}); 
+</script>
+<script>
 var $table = $('#table_list');
 var index_list_json = {{ result_json | safe}}
 var result_list_json = [];
 var columns_set = [];
 $(function() {
-
-
     for(var key in index_list_json)
     {
         for(var item in index_list_json[key])
@@ -96,8 +153,7 @@ $(function() {
             $table.bootstrapTable('resetView', {
                 height: getHeight()
             });
-        });
-    
+        });    
 });
 
 function flightFormatter(value) {

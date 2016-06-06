@@ -12,11 +12,49 @@ from main_web.models import Stencil
 
 
 def all_childtable_index_list(request):
-    infdb_if = influxDB_interface()
-    sector_index = infdb_if.inf_query("DB_sector_index", "*", "index")
-    df = sector_index['index']
-    result_json = df.to_json(orient="records")
-    return render(request, 'all_childtable_index_list.html',{'result_json': result_json})
+    if request.method == 'POST':
+        post_data = request.POST
+        date_start = post_data["date_start"]
+        date_end = post_data["date_end"]
+        AC_id = post_data["AC_id"]
+        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d" + " AND AC=" + "'" + AC_id + "'"
+        infdb_if = influxDB_interface()
+        sector_index = infdb_if.inf_query("DB_sector_index", "*", "index", where_str)
+        if sector_index <> {}:
+            df = sector_index['index']
+            result_json = df.to_json(orient="records")
+            return render(request, 'all_childtable_index_list.html', {'result_json': result_json,
+                                                               'date_start': date_start,
+                                                               'date_end': date_end})
+        else:
+            return render(request, 'all_childtable_index_list.html', {'date_start': date_start,
+                                                               'date_end': date_end + "  no data"                                                               })
+    else:
+        return render(request, 'all_childtable_index_list.html')
+
+
+def query_index(request):
+    if request.method == 'POST':
+        post_data = request.POST
+        date_start = post_data["date_start"]
+        date_end = post_data["date_end"]
+        AC_id = post_data["AC_id"]
+        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d" + " AND AC=" + "'" + AC_id + "'"
+        infdb_if = influxDB_interface()
+        sector_index = infdb_if.inf_query("DB_sector_index", "*", "index", where_str)
+        if sector_index <> {}:
+            df = sector_index['index']
+            result_json = df.to_json(orient="records")
+            return render(request, 'single_plane_query.html', {'result_json': result_json,
+                                                               'date_start': date_start,
+                                                               'date_end': date_end,
+                                                               'AC_id': AC_id})
+        else:
+            return render(request, 'single_plane_query.html', {'date_start': date_start,
+                                                               'date_end': date_end + "  no data",
+                                                               'AC_id': AC_id})
+    else:
+        return render(request, 'single_plane_query.html')
 
 def runup_list(request):
     infdb_if = influxDB_interface()
