@@ -10,6 +10,7 @@ from list2string_and_echarts_function import LIST_to_STR
 from influxdb_function import influxDB_interface
 from main_web.models import Stencil
 from arrow_time import today_date_for_influxd_sql
+from arrow_time import ten_day_ago_for_influxd_sql
 
 def all_childtable_index_list(request):
     if request.method == 'POST':
@@ -37,8 +38,12 @@ def all_childtable_index_list(request):
 def query_index(request):
     if request.method == 'POST':
         post_data = request.POST
-        date_start = post_data["date_start"]
-        date_end = post_data["date_end"]
+        if post_data["date_start"]=='' or post_data["date_end"] == '':
+            date_start = ten_day_ago_for_influxd_sql()
+            date_end = today_date_for_influxd_sql()
+        else:
+            date_start = post_data["date_start"]
+            date_end = post_data["date_end"]
         AC_id = post_data["AC_id"]
         where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d" + " AND AC=" + "'" + AC_id + "'"
         infdb_if = influxDB_interface()
