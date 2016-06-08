@@ -17,21 +17,16 @@
         <div class="widget-content">
             <div class="row-fluid">
                 <div class="span12">
-                    <form action="/all_childtable_index_list/" method="post" role="form">
+                    <form id="daterange_query" action="/all_childtable_index_list/" method="post" role="form">
                         {% csrf_token %}
-                        <div class="span4">
+                        <div class="span3">
                             
                                 <label class="control-label">
-                                时间段：
+                                时间范围：
                                 </label>
-                                <input id="reportrange" class="pull-left dateRange" style="width:350px" name="date_range" placeholder="请点击选择">
+                                <input id="reportrange" class="form-control" name="date_range" placeholder="请点击选择">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                                                
-                        </div>
-                        <div class="span4">
-                            <label class="control-label">
-                            &nbsp;       
-                            </label>
-                            <button class="btn btn-primary" type="submit"><i class="icon-search"></i>&ensp;开始查询</button>
                         </div>
                     </form>
                 </div>
@@ -143,7 +138,7 @@
                        //选择时间后触发重新加载的方法
            $("#reportrange").on('apply.daterangepicker',function(){
                //当选择时间后，出发dt的重新加载数据的方法
-               console.log($("#reportrange"));
+               document.getElementById("daterange_query").submit()
            });
         })
     </script>

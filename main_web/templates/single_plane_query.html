@@ -29,7 +29,7 @@
                         </div>
                         <div class="span3">
                             <label><b>机号</b></label>
-                            <select id="AC_select" class="form-control" name="AC_id">
+                            <select name="AC_id" id="AC_select" class="js-example-tags span12" tabindex="-1" aria-hidden="true">
                             </select>
                         </div>
                         <div class="span3">
@@ -69,6 +69,13 @@
 <script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/static/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script>
+
+$(".js-example-tags").select2({
+          placeholder: "点击选择或搜索参数",
+          tags: false
+        });
+
+
 $("#date_start").datetimepicker({
     minView: "month", //选择日期后，不会再跳转去选择时分秒 
     format: "yyyy-mm-dd", //选择日期后，文本框显示的日期格式
