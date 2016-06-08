@@ -15,8 +15,10 @@ from arrow_time import ten_day_ago_for_influxd_sql
 def all_childtable_index_list(request):
     if request.method == 'POST':
         post_data = request.POST
-        date_start = post_data["date_start"]
-        date_end = post_data["date_end"]
+        date_range = post_data["date_range"]
+        date_start = date_range.split(' to ')[0]
+        date_end = date_range.split(' to ')[1]
+
     else:
         date_start = today_date_for_influxd_sql()
         date_end = today_date_for_influxd_sql()
