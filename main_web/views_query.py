@@ -72,11 +72,38 @@ def runup_list(request):
     return render(request, 'all_childtable_index_list.html',{'result_json': result_json})
 
 def tendency_total(request):
-    infdb_if = influxDB_interface()
-    sector_index = infdb_if.inf_query("tendency", "*", "tendency_total")
-    df = sector_index['tendency_total']
-    result_json = df.to_json(orient="records")
-    return render(request, 'all_childtable_index_list.html', {'result_json': result_json})
+    if request.method == 'POST':
+        post_data = request.POST
+        date_range = post_data["date_range"]
+        date_start = date_range.split(' to ')[0]
+        date_end = date_range.split(' to ')[1]
+
+        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
+        infdb_if = influxDB_interface()
+        sector_index = infdb_if.inf_query("tendency", "*", "tendency_total", where_str)
+        if sector_index <> {}:
+            df = sector_index['tendency_total']
+            result_json = df.to_json(orient="records")
+            return render(request, 'tendency_total.html', {'result_json': result_json,
+                                                               'date_start': date_start,
+                                                               'date_end': date_end,
+                                                               })
+        else:
+            return render(request, 'tendency_total.html', {'date_start': date_start,
+                                                               'date_end': date_end + "  no data",
+                                                               })
+    else:
+        date_start = ten_day_ago_for_influxd_sql()
+        date_end = today_date_for_influxd_sql()
+        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
+        infdb_if = influxDB_interface()
+        sector_index = infdb_if.inf_query("tendency", "*", "tendency_total", where_str)
+        df = sector_index['tendency_total']
+        result_json = df.to_json(orient="records")
+        return render(request, 'tendency_total.html', {'result_json': result_json,
+                                                                  'date_start': date_start,
+                                                                  'date_end': date_end})
+
 
 def childtable(request, sector_id):
     result_list = []
