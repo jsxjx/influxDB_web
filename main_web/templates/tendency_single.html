@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% block maincontents %}
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+    <div id="content-header">
+        <div id="breadcrumb">
+            <a href="index.html" title="首页" class="tip-bottom">
+                <i class="icon-home"></i> 首页</a>
+        </div>
+    </div>
+<div class="row-fluid">
+    <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-search"></i></span>
+            <h5>按日期查询全机队</h5>
+        </div>
+        <div class="widget-content">
+            <div class="row-fluid">
+                <div class="span12">
+                    <form id="daterange_query" action="/tendency_single/" method="post" role="form">
+                        {% csrf_token %}
+                        <div class="span2">
+                            <label><b>机号</b></label>
+                            
+                            <select name="AC_id" id="AC_select" class="js-example-tags span12" tabindex="-1" aria-hidden="true" onchange="show_sub(this.options[this.options.selectedIndex].value)">
+                            </select>
+                        </div>
+
+                        <div class="span3">
+                            <label class="control-label">
+                            机队选择
+                            </label>
+                            <select id="tendency_type" name="para_name">
+                                <option value="tendency_total">全机队</option>
+                                <option value="tendency_737_3C">737_3C</option>
+                                <option value="tendency_737_7">737_7</option>
+                            </select>
+                        </div>
+                        <div class="span3">
+                            
+                            <label class="control-label">
+                            时间范围：
+                            </label>
+                            <input id="reportrange" class="form-control" name="date_range" placeholder="请点击选择">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>                                                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End-breadcrumbs-->
+<!--详细信息列表 -->
+    <div class="row-fluid">
+        <div class="widget-box">
+            <div class="widget-title bg_lg">
+                <span class="icon">
+                    <i class="icon-plane"></i>
+                </span>
+                <h5>ALL&nbsp;PLANE&nbsp;&nbsp;&nbsp;&nbsp;{{date_start}}&nbsp;&nbsp;to&nbsp;&nbsp;{{date_end}}</h5>
+            </div>
+            <div class="widget-content">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <table id="table_list" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true"
+                        data-show-columns="true"
+                        >
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end-main-container-part-->
+
+<script type="text/javascript" src="/static/daterangepicker/moment.js"></script>
+<script type="text/javascript" src="/static/daterangepicker/daterangepicker-1.3.7.js"></script>
+<script type="text/javascript">
+        $(document).ready(function (){
+                    //时间插件
+                $('#reportrange span').html(moment().subtract('hours', 1).format('YYYY-MM-DD HH:mm:ss') + ' - ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+        
+                $('#reportrange').daterangepicker(
+                            {
+                                // startDate: moment().startOf('day'),
+                                //endDate: moment(),
+                                //minDate: '01/01/2012',    //最小时间
+                                maxDate : moment(), //最大时间 
+                                dateLimit : {
+                                    days : 180
+                                }, //起止时间的最大间隔
+                                showDropdowns : true,
+                                showWeekNumbers : false, //是否显示第几周
+                                //timePicker : true, //是否显示小时和分钟
+                                timePickerIncrement : 60, //时间的增量，单位为分钟
+                                timePicker12Hour : false, //是否使用12小时制来显示时间
+                                ranges : {
+                                    //'最近1小时': [moment().subtract('hours',1), moment()],
+                                    '今日': [moment().startOf('day'), moment()],
+                                    '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                                    '最近7日': [moment().subtract('days', 6), moment()],
+                                    '最近30日': [moment().subtract('days', 29), moment()]
+                                },
+                                opens : 'right', //日期选择框的弹出位置
+                                buttonClasses : [ 'btn btn-default' ],
+                                applyClass : 'btn-small btn-primary blue',
+                                cancelClass : 'btn-small',
+                                format : 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+                                separator : ' to ',
+                                locale : {
+                                    applyLabel : '确定',
+                                    cancelLabel : '取消',
+                                    fromLabel : '起始时间',
+                                    toLabel : '结束时间',
+                                    customRangeLabel : '自定义',
+                                    daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                                    monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月',
+                                            '七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                                    firstDay : 1
+                                }
+                            }, function(start, end, label) {//格式化日期显示框
+                                
+                                $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+
+                           });
+
+                //设置日期菜单被选项  --开始--
+                  var dateOption ;
+                  if("${riqi}"=='day') {
+                        dateOption = "今日";
+                  }else if("${riqi}"=='yday') {
+                        dateOption = "昨日";
+                  }else if("${riqi}"=='week'){
+                        dateOption ="最近7日";
+                  }else if("${riqi}"=='month'){
+                        dateOption ="最近30日";
+                  }else if("${riqi}"=='year'){
+                        dateOption ="最近一年";
+                  }else{
+                        dateOption = "自定义";
+                  }
+                   $(".daterangepicker").find("li").each(function (){
+                        if($(this).hasClass("active")){
+                            $(this).removeClass("active");
+                        }
+                        if(dateOption==$(this).html()){
+                            $(this).addClass("active");
+                        }
+                  });
+                       //设置日期菜单被选项  --结束--
+                       //选择时间后触发重新加载的方法
+           $("#reportrange").on('apply.daterangepicker',function(){
+               //当选择时间后，出发dt的重新加载数据的方法
+               document.getElementById("daterange_query").submit()
+           });
+        })
+</script>
+
+<script>
+$(".js-example-tags").select2({
+          placeholder: "点击选择或搜索参数",
+          tags: false
+        });
+
+$(function(){
+    
+});
+
+$(function(){ 
+    var id = new Array(); 
+    var value = new Array('B-1527', 'B-1531', 'B-1738', 'B-1763', 'B-1765', 'B-1768', 'B-1942', 'B-1956', 'B-1959', 'B-1976', 'B-2612', 'B-2613', 'B-2649', 'B-2700', 'B-5198', 'B-5201', 'B-5202', 'B-5203', 'B-5214', 'B-5217', 'B-5220', 'B-5296', 'B-5297', 'B-5325', 'B-5327', 'B-5329', 'B-5390', 'B-5392', 'B-5398', 'B-5426', 'B-5443', 'B-5477', 'B-5486', 'B-5496', 'B-5582', 'B-5583', 'B-5622', 'B-5679', 'B-5682', 'B-5803', 'B-6496', 'B-6497', 'B-7181'); 
+   
+    var select = document.getElementById("AC_select"); 
+    for(var x = 0;x<value.length;x++){ 
+        var option = document.createElement("option"); 
+        option.setAttribute("value",value[x]);//设置option属性值 
+        option.appendChild(document.createTextNode(value[x])); 
+        select.appendChild(option);//向select增加option 
+    } 
+
+    select.options[0].selected = true;//设置默认选中第一个
+
+}); 
+
+function show_sub(v){     
+        $.ajax({
+            type:"GET",
+            data: {AC_id:v,},
+            url: "{% url 'tendency_single_para_list' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
+            cache: false,
+            dataType: "html",
+            success: function(result, statues, xml){
+                alert(result);                                         //成功时弹出view传回来的结果
+            },
+            error: function(){
+                alert("录入不成功");
+            }
+        });     
+    }
+
+</script>
+<script>
+var $table = $('#table_list');
+var index_list_json = {{ result_json | safe}}
+var result_list_json = [];
+var columns_set = [];
+$(function() {
+    for(var key in index_list_json)
+    {
+        for(var item in index_list_json[key])
+        {
+            var single_set =
+            {
+                title: '',
+                field: '',
+                align: 'center',
+                valign: 'middle',                
+                sortable: true
+            };
+            if(item!="AC_sector")
+            {
+                if(item=="update_time")
+                {
+                    single_set["title"] = "update_time BJS";
+                    single_set["field"] = item;
+                    single_set["visible"] = true;
+                    columns_set.push(single_set);
+                }
+                else if(item!="AC" && item!="FLT_number" && item!="update_date" && item!="update_time")
+                {
+                    single_set["title"] = item;
+                    single_set["field"] = item;
+                    single_set["visible"] = false;
+                    columns_set.push(single_set);
+                }
+                else
+                {
+                    single_set["title"] = item;
+                    single_set["field"] = item;
+                    single_set["visible"] = true;
+                    columns_set.push(single_set);
+                }
+            }
+        }
+        break;
+    }
+    columns_set.push(
+            {
+                title: '进入链接',
+                field: 'AC_sector',
+                align: 'center',
+                valign: 'middle',
+                sortable: true,
+                visible: true,
+                formatter: flightFormatter
+            });
+        
+    $table.bootstrapTable({
+                data: index_list_json,
+                columns: columns_set,
+                search: true,
+                height: getHeight()
+            });
+
+    $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });    
+});
+
+function flightFormatter(value) {
+
+    var the_url;
+
+    the_url = "{% url 'childtable' 112233 %}".replace("112233", value);
+    return [
+        '<a href="' + the_url + '" target="_blank">' + "进入" + '</a>'
+    ].join('');
+}
+
+function getHeight() {
+        return $(window).height() - $('h2').outerHeight(true);
+    }
+
+</script>
+
+{% endblock %}
