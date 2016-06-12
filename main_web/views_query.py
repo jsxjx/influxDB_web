@@ -111,11 +111,23 @@ def tendency_single(request):
         date_range = post_data["date_range"]
         date_start = date_range.split(' to ')[0]
         date_end = date_range.split(' to ')[1]
-        tendency_type = post_data["tendency_type"]
-
-        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
+        para_name = post_data["para_name"]
+        para_name_sed = "\"" + para_name + "\""
+        exclude_list = ["AC","AC_sector","FLT_number","FLT_status","update_date","update_time"]
+        exclude_list = map(lambda x:"\"" + x + "\"", exclude_list)
+        exclude_list.append(para_name_sed)
+        query_para = ",".join(exclude_list)
+        print query_para
+        AC_id = post_data["AC_id"]
+        AC_id_sed = "\'" + AC_id + "\'"
+        qar_conf = AC_WQAR_CONFIG().juge_config(AC_id)
+        if qar_conf == "737_7":
+            tendency_type = "tendency_737_7"
+        elif qar_conf == "737_3C":
+            tendency_type = "tendency_737_3C"
+        where_str = " WHERE AC = " + AC_id_sed + " AND " + "time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
         infdb_if = influxDB_interface()
-        sector_index = infdb_if.inf_query("tendency", "*", tendency_type, where_str)
+        sector_index = infdb_if.inf_query("tendency", query_para, tendency_type, where_str)
         if sector_index <> {}:
             df = sector_index[tendency_type]
             result_json = df.to_json(orient="records")
@@ -128,21 +140,25 @@ def tendency_single(request):
                                                                'date_end': date_end + "  no data",
                                                                })
     else:
-        date_start = ten_day_ago_for_influxd_sql()
-        date_end = today_date_for_influxd_sql()
-        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
-        infdb_if = influxDB_interface()
-        sector_index = infdb_if.inf_query("tendency", "*", "tendency_total", where_str)
-        df = sector_index['tendency_total']
-        result_json = df.to_json(orient="records")
-        return render(request, 'tendency_single.html', {'result_json': result_json,
-                                                                  'date_start': date_start,
-                                                                  'date_end': date_end})
+        return render(request, 'tendency_single.html', {'result_json': {}})
 
 def tendency_single_para_list(request):
     AC_id = request.GET.get('AC_id', None)
-    print AC_id
-    return HttpResponse("suc")
+    qar_conf = AC_WQAR_CONFIG().juge_config(AC_id)
+    if qar_conf == "737_7":
+        mes = "tendency_737_7"
+    elif qar_conf == "737_3C":
+        mes = "tendency_737_3C"
+    para_object = influxDB_interface().show_fields("tendency", mes)
+
+    para_list = []
+    exclude_list = ["AC","AC_sector","FLT_number","FLT_status","update_date","update_time"]
+    for item in para_object:
+        para_name = item['fieldKey']
+        if para_name not in exclude_list:
+            para_list.append(para_name)
+    para_json = json.dumps(para_list)
+    return HttpResponse(para_json)
 
 def childtable(request, sector_id):
     result_list = []

@@ -28,12 +28,9 @@
 
                         <div class="span3">
                             <label class="control-label">
-                            机队选择
+                            参数选择
                             </label>
-                            <select id="tendency_type" name="para_name">
-                                <option value="tendency_total">全机队</option>
-                                <option value="tendency_737_3C">737_3C</option>
-                                <option value="tendency_737_7">737_7</option>
+                            <select id="para_select" name="para_name" class="js-example-tags span12">
                             </select>
                         </div>
                         <div class="span3">
@@ -191,12 +188,23 @@ function show_sub(v){
             data: {AC_id:v,},
             url: "{% url 'tendency_single_para_list' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
             cache: false,
-            dataType: "html",
+            dataType: "json",
             success: function(result, statues, xml){
                 alert(result);                                         //成功时弹出view传回来的结果
+                var value = result;
+                
+                var select = document.getElementById("para_select"); 
+                for(var x = 0;x<value.length;x++){ 
+                    var option = document.createElement("option"); 
+                    option.setAttribute("value",value[x]);//设置option属性值 
+                    option.appendChild(document.createTextNode(value[x])); 
+                    select.appendChild(option);//向select增加option 
+                } 
+
+    select.options[0].selected = true;//设置默认选中第一个
             },
             error: function(){
-                alert("录入不成功");
+                alert("连接失败");
             }
         });     
     }
@@ -233,7 +241,7 @@ $(function() {
                 {
                     single_set["title"] = item;
                     single_set["field"] = item;
-                    single_set["visible"] = false;
+                    single_set["visible"] = true;
                     columns_set.push(single_set);
                 }
                 else
