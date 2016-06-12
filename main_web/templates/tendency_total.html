@@ -159,7 +159,7 @@ $(function() {
                 title: '',
                 field: '',
                 align: 'center',
-                valign: 'middle',
+                valign: 'middle',                
                 sortable: true
             };
             if(item!="AC_sector")
@@ -168,12 +168,21 @@ $(function() {
                 {
                     single_set["title"] = "update_time BJS";
                     single_set["field"] = item;
+                    single_set["visible"] = true;
+                    columns_set.push(single_set);
+                }
+                else if(item!="AC" && item!="FLT_number" && item!="update_date" && item!="update_time")
+                {
+                    single_set["title"] = item;
+                    single_set["field"] = item;
+                    single_set["visible"] = false;
                     columns_set.push(single_set);
                 }
                 else
                 {
                     single_set["title"] = item;
                     single_set["field"] = item;
+                    single_set["visible"] = true;
                     columns_set.push(single_set);
                 }
             }
@@ -187,6 +196,7 @@ $(function() {
                 align: 'center',
                 valign: 'middle',
                 sortable: true,
+                visible: true,
                 formatter: flightFormatter
             });
         
