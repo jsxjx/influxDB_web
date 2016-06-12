@@ -20,13 +20,22 @@
                     <form id="daterange_query" action="/tendency_total/" method="post" role="form">
                         {% csrf_token %}
                         <div class="span3">
+                        <label class="control-label">
+                        机队选择
+                        </label>
+                        <select id="tendency_type" name="tendency_type">
+                            <option value="tendency_total">全机队</option>
+                            <option value="tendency_737_3C">737_3C</option>
+                            <option value="tendency_737_7">737_7</option>
+                        </select>
+                        </div>
+                        <div class="span3">
                             
-                                <label class="control-label">
-                                时间范围：
-                                </label>
-                                <input id="reportrange" class="form-control" name="date_range" placeholder="请点击选择">
-                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                                               
+                            <label class="control-label">
+                            时间范围：
+                            </label>
+                            <input id="reportrange" class="form-control" name="date_range" placeholder="请点击选择">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>                                                            
                         </div>
                     </form>
                 </div>

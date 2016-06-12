@@ -77,12 +77,13 @@ def tendency_total(request):
         date_range = post_data["date_range"]
         date_start = date_range.split(' to ')[0]
         date_end = date_range.split(' to ')[1]
+        tendency_type = post_data["tendency_type"]
 
         where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
         infdb_if = influxDB_interface()
-        sector_index = infdb_if.inf_query("tendency", "*", "tendency_total", where_str)
+        sector_index = infdb_if.inf_query("tendency", "*", tendency_type, where_str)
         if sector_index <> {}:
-            df = sector_index['tendency_total']
+            df = sector_index[tendency_type]
             result_json = df.to_json(orient="records")
             return render(request, 'tendency_total.html', {'result_json': result_json,
                                                                'date_start': date_start,
