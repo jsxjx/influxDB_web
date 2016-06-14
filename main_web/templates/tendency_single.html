@@ -190,9 +190,7 @@ function show_sub(v){
             cache: false,
             dataType: "json",
             success: function(result, statues, xml){
-                alert(result);                                         //成功时弹出view传回来的结果
                 var value = result;
-                
                 var select = document.getElementById("para_select"); 
                 for(var x = 0;x<value.length;x++){ 
                     var option = document.createElement("option"); 
