@@ -60,6 +60,7 @@
             <div class="widget-content">
                 <div class="row-fluid">
                     <div class="span12">
+                        <div id="main" style="height:0px"></div>
                         <table id="table_list" data-sort-name="stargazers_count" data-sort-order="desc" data-pagination="true" data-page-size="15" data-page-list="[15,30,66,100]" data-show-pagination-switch="true"
                         data-show-columns="true"
                         >
@@ -75,6 +76,7 @@
 
 <script type="text/javascript" src="/static/daterangepicker/moment.js"></script>
 <script type="text/javascript" src="/static/daterangepicker/daterangepicker-1.3.7.js"></script>
+<script src="/static/echarts_3.0.2/echarts.min.js"></script>
 <script type="text/javascript">
         $(document).ready(function (){
                     //时间插件
@@ -179,7 +181,7 @@ $(function(){
     } 
 
     select.options[0].selected = true;//设置默认选中第一个
-
+    show_sub(select.options[select.options.selectedIndex].value);
 }); 
 
 function show_sub(v){     
@@ -189,17 +191,19 @@ function show_sub(v){
             url: "{% url 'tendency_single_para_list' %}", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
             cache: false,
             dataType: "json",
-            success: function(result, statues, xml){
+            success: function(result, statues, xml)
+            {
                 var value = result;
                 var select = document.getElementById("para_select"); 
-                for(var x = 0;x<value.length;x++){ 
+                for(var x = 0;x<value.length;x++)
+                { 
                     var option = document.createElement("option"); 
                     option.setAttribute("value",value[x]);//设置option属性值 
                     option.appendChild(document.createTextNode(value[x])); 
                     select.appendChild(option);//向select增加option 
                 } 
 
-    select.options[0].selected = true;//设置默认选中第一个
+            select.options[0].selected = true;//设置默认选中第一个
             },
             error: function(){
                 alert("连接失败");
@@ -235,12 +239,13 @@ $(function() {
                     single_set["visible"] = true;
                     columns_set.push(single_set);
                 }
-                else if(item!="AC" && item!="FLT_number" && item!="update_date" && item!="update_time")
+                else if(item!="AC" && item!="FLT_number" && item!="update_date" && item!="update_time" && item!="FLT_status")
                 {
                     single_set["title"] = item;
                     single_set["field"] = item;
                     single_set["visible"] = true;
                     columns_set.push(single_set);
+                    var para_name = item;
                 }
                 else
                 {
@@ -275,7 +280,72 @@ $(function() {
             $table.bootstrapTable('resetView', {
                 height: getHeight()
             });
-        });    
+        });
+    //echart option
+    var post_data = index_list_json;
+    // Schema:
+    var schema = [
+        {name: 'Income', index: 0, text: '人均收入', unit: '美元'},
+    ];
+    var data_para_time = new Array();
+    var para_data = new Array();
+    var flight_number = new Array();
+    var update_date = new Array();
+    var update_time = new Array();
+    for(var i=post_data.length -1;i>=0;i--)
+    {
+        data_para_time.push(post_data[i]["update_date"]); 
+        para_data.push(post_data[i][para_name]);
+        flight_number.push(post_data[i]["FLT_number"]);
+        update_date.push(post_data[i]["update_date"]);
+        update_time.push(post_data[i]["update_time"]);
+    }
+    var axisDATA = data_para_time;
+    var option_base = new Object();
+    option_base =
+    {
+        animation:false,
+        tooltip: {
+            trigger: 'axis',
+            show: true,
+            formatter: function (obj) 
+            {
+                var value = obj[0].value;
+                index = obj[0].dataIndex
+                return '日期: ' + update_date[index] + '<br>'+ '时间: ' + update_time[index] + '<br>' + '航班号: ' +flight_number[index] + '<br>' + obj[0].seriesName + ' : ' + obj[0].value;
+            }
+        },                   
+        dataZoom:{
+            type: 'slider',
+            realtime:false,
+            show:true,
+            orient:'horizontal',
+            start: 0,
+            end: 100
+        },
+        xAxis : {
+            type : 'category',
+            data : axisDATA,
+            name : "HH:MM:SS"
+        },
+        yAxis : {
+                type : 'value'
+
+        },
+        legend: {
+                data:[para_name]
+        },
+        series : 
+        [{
+            name:para_name,
+            type:'line',
+            data:para_data,
+        }]  
+    };
+    var echarts_element = document.getElementById('main');
+    echarts_element.style.height = 300 + 'px';
+    myechart = echarts.init(echarts_element);
+    myechart.setOption(option_base);   
 });
 
 function flightFormatter(value) {
