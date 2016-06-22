@@ -196,6 +196,7 @@ function show_sub(v){
             {
                 var value = result;
                 var select = document.getElementById("para_select"); 
+                select.options.length = 0;
                 for(var x = 0;x<value.length;x++)
                 { 
                     var option = document.createElement("option"); 
