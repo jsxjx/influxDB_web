@@ -22,3 +22,6 @@ def home(request):
     else:
 
         return render(request, 'home.html', {'result_json': {}})
+
+def guide(request):
+    return render(request, 'guide.html')
