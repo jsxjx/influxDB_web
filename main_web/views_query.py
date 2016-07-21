@@ -72,7 +72,7 @@ def runup_list(request):
         date_end = date_range.split(' to ')[1]
 
     else:
-        date_start = today_date_for_influxd_sql()
+        date_start = ten_day_ago_for_influxd_sql()
         date_end = today_date_for_influxd_sql()
 
     where_str = " WHERE time > " + "'" + date_start + "'" + " - 8h" + " AND time < " + "'" + date_end + "'" + " + 16h"
