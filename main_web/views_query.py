@@ -65,8 +65,20 @@ def query_index(request):
         return render(request, 'single_plane_query.html')
 
 def runup_list(request):
+    if request.method == 'POST':
+        post_data = request.POST
+        date_range = post_data["date_range"]
+        date_start = date_range.split(' to ')[0]
+        date_end = date_range.split(' to ')[1]
+
+    else:
+        date_start = today_date_for_influxd_sql()
+        date_end = today_date_for_influxd_sql()
+
+    where_str = " WHERE time > " + "'" + date_start + "'" + " - 8h" + " AND time < " + "'" + date_end + "'" + " + 16h"
+    where_str = where_str + " AND FLT_status='GROUND'"
     infdb_if = influxDB_interface()
-    sector_index = infdb_if.inf_query("DB_sector_index", "*", "index", " WHERE FLT_status='GROUND' ")
+    sector_index = infdb_if.inf_query("DB_sector_index", "*", "index", where_str)
     df = sector_index['index']
     result_json = df.to_json(orient="records")
     return render(request, 'all_childtable_index_list.html',{'result_json': result_json})
