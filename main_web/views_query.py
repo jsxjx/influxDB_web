@@ -266,7 +266,9 @@ def eFlow_total(request):
         sector_index = infdb_if.inf_query("tendency", "*", tendency_type, where_str)
         if sector_index <> {}:
             df = sector_index[tendency_type]
-            result_json = df.to_json(orient="records")
+            eflow_ac_list = ["B-7181", "B-7892", "B-7595", "B-7596", "B-7598"]
+            df_eflow = df[df['AC'].isin(eflow_ac_list)]
+            result_json = df_eflow.to_json(orient="records")
             return render(request, 'eFlow_total.html', {'result_json': result_json,
                                                                'date_start': date_start,
                                                                'date_end': date_end,

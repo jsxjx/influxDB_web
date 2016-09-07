@@ -12,32 +12,7 @@
 <div class="row-fluid">
     <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-search"></i></span>
-            <h5>按日期查询全机队</h5>
-        </div>
-        <div class="widget-content">
-            <div class="row-fluid">
-                <div class="span12">
-                    <form id="daterange_query" action="/tendency_total/" method="post" role="form">
-                        {% csrf_token %}
-                        <div class="span3">
-                        <label class="control-label">
-                        机队选择
-                        </label>
-                        <select id="tendency_type" name="tendency_type">
-                            <option value="tendency_737_7">737_7</option>
-                        </select>
-                        </div>
-                        <div class="span3">
-                            
-                            <label class="control-label">
-                            时间范围：
-                            </label>
-                            <input id="reportrange" class="form-control" name="date_range" placeholder="请点击选择">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>                                                            
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <h5>EFLOW 最近10日</h5>
         </div>
     </div>
 </div>
@@ -167,13 +142,20 @@ $(function() {
                 field: '',
                 align: 'center',
                 valign: 'middle',                
-                sortable: true
+                sortable: true,
             };
             if(item!="AC_sector")
             {
                 if(item=="update_time")
                 {
                     single_set["title"] = "update_time BJS";
+                    single_set["field"] = item;
+                    single_set["visible"] = true;
+                    columns_set.push(single_set);
+                }
+                else if(item=="count off:eFlow")
+                {
+                    single_set["title"] = item;
                     single_set["field"] = item;
                     single_set["visible"] = true;
                     columns_set.push(single_set);
@@ -211,6 +193,8 @@ $(function() {
                 data: index_list_json,
                 columns: columns_set,
                 search: true,
+                sortName:"count off:eFlow",
+                sortOrder:"desc",
                 height: getHeight()
             });
 
