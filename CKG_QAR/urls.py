@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^tendency_total/$', 'main_web.views_query.tendency_total'),
     url(r'^tendency_single/$', 'main_web.views_query.tendency_single'),
     url(r'^tendency_single_para_list', 'main_web.views_query.tendency_single_para_list', name = 'tendency_single_para_list'),
+    #eFlow趋势统计
+    url(r'^eFlow_total/$', 'main_web.views_query.eFlow_total'),
     #使用说明
     url(r'^guide/$', 'main_web.views.guide'),
 ]
