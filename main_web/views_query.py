@@ -11,6 +11,7 @@ from influxdb_function import influxDB_interface
 from main_web.models import Stencil
 from arrow_time import today_date_for_influxd_sql
 from arrow_time import ten_day_ago_for_influxd_sql
+from arrow_time import three_day_ago_for_influxd_sql
 
 def all_childtable_index_list(request):
     if request.method == 'POST':
@@ -254,39 +255,15 @@ def ajax_some_para(request):
     return HttpResponse(result_json)
 
 def eFlow_total(request):
-    if request.method == 'POST':
-        post_data = request.POST
-        date_range = post_data["date_range"]
-        date_start = date_range.split(' to ')[0]
-        date_end = date_range.split(' to ')[1]
-        tendency_type = post_data["tendency_type"]
-
-        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
-        infdb_if = influxDB_interface()
-        sector_index = infdb_if.inf_query("tendency", "*", tendency_type, where_str)
-        if sector_index <> {}:
-            df = sector_index[tendency_type]
-            eflow_ac_list = ["B-7181", "B-7892", "B-7595", "B-7596", "B-7598"]
-            df_eflow = df[df['AC'].isin(eflow_ac_list)]
-            result_json = df_eflow.to_json(orient="records")
-            return render(request, 'eFlow_total.html', {'result_json': result_json,
-                                                               'date_start': date_start,
-                                                               'date_end': date_end,
-                                                               })
-        else:
-            return render(request, 'eFlow_total.html', {'date_start': date_start,
-                                                               'date_end': date_end + "  no data",
-                                                               })
-    else:
-        date_start = ten_day_ago_for_influxd_sql()
-        date_end = today_date_for_influxd_sql()
-        where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
-        infdb_if = influxDB_interface()
-        sector_index = infdb_if.inf_query("tendency", "*", "tendency_737_7", where_str)
-        df = sector_index['tendency_737_7']
-        eflow_ac_list = ["B-7181", "B-7892", "B-7595", "B-7596", "B-7598"]
-        df_eflow = df[df['AC'].isin(eflow_ac_list)]
-        result_json = df_eflow.to_json(orient="records")
-        return render(request, 'eFlow_total.html', {'result_json': result_json,
-                                                                  'date_start': date_start,
-                                                                  'date_end': date_end})
+    date_start = three_day_ago_for_influxd_sql()
+    date_end = today_date_for_influxd_sql()
+    where_str = " WHERE time > " + "'" + date_start + "'" + " AND time < " + "'" + date_end + "'" + " + 1d"
+    infdb_if = influxDB_interface()
+    sector_index = infdb_if.inf_query("tendency", "*", "tendency_737_7", where_str)
+    df = sector_index['tendency_737_7']
+    eflow_ac_list = ["B-7181", "B-7892", "B-7595", "B-7596", "B-7598"]
+    df_eflow = df[df['AC'].isin(eflow_ac_list)]
+    result_json = df_eflow.to_json(orient="records")
+    return render(request, 'eFlow_total.html', {'result_json': result_json,
+                                                              'date_start': date_start,
+                                                              'date_end': date_end})
