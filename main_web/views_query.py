@@ -261,7 +261,15 @@ def eFlow_total(request):
     infdb_if = influxDB_interface()
     sector_index = infdb_if.inf_query("tendency", "*", "tendency_737_7", where_str)
     df = sector_index['tendency_737_7']
-    eflow_ac_list = ["B-7181", "B-7892", "B-7595", "B-7596", "B-7598"]
+    eflow_ac_list = ["B-7181",
+                     "B-7892",
+                     "B-7595",
+                     "B-7596",
+                     "B-7597",
+                     "B-7598",
+                     "B-7890",
+                     "B-7893"]
+
     df_eflow = df[df['AC'].isin(eflow_ac_list)]
     result_json = df_eflow.to_json(orient="records")
     return render(request, 'eFlow_total.html', {'result_json': result_json,
