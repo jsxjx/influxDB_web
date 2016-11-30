@@ -270,7 +270,9 @@ def eFlow_total(request):
                      "B-7890",
                      "B-7893",
                      "B-7895",
-                     "B-7896"]
+                     "B-7896",
+                     "B-7891",
+                     "B-7897"]
 
     df_eflow = df[df['AC'].isin(eflow_ac_list)]
     result_json = df_eflow.to_json(orient="records")
